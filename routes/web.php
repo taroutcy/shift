@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('users', 'UserController@index');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes([
+    'register' => false // ユーザ登録機能をオフに切替
+]);
+
+// Route::get('/home', 'HomeController@index')->name('home');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +9,21 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    
+    public function role()
+    {
+        return $this->belongsTo('App\Models\Role');
+    }
+    
+    public function department()
+    {
+        return $this->belongsTo('App\Models\Department');
+    }
+    
+    public function schedule()
+    {
+        return $this->hasOne('App\Models\Schedule');
+    }
 
     /**
      * The attributes that are mass assignable.
