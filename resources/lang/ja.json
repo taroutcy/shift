@@ -1,0 +1,12 @@
+{
+    "Number": "個人番号",
+    "Name": "氏名", 
+    "Password": "パスワード", 
+    "Confirm Password": "パスワード再入力", 
+    "Department": "デパ", 
+    "Role": "契約状況", 
+    "Register": "登録", 
+    "Login": "ログイン", 
+    "Remember Me": "ログイン状態を保存", 
+    "Forgot Your Password?": "パスワードを忘れた?"
+}

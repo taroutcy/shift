@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use App\Models\Department;
+use App\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -38,8 +41,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
     }
+    
 
     /**
      * Get a validator for an incoming registration request.
@@ -47,17 +50,35 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    
+    protected $rules = [
+        'number' => ['required', 'string', 'min:10', 'max:10', 'unique:users'], 
+        'last_name' => ['required', 'string', 'max:10'], 
+        'first_name' => ['required', 'string', 'max:10'], 
+        'password' => ['required', 'string', 'min:6', 'confirmed'],
+        'department_id' => ['required'],
+        'role_id' => ['required'],
+    ];
+    
+    protected $messages = [
+        'number.required' => '個人番号を入力してください', 
+        'number.min' => '10桁の個人番号を入力してください',
+        'number.max' => '10桁の個人番号を入力してください',
+        'number.unique' => 'その個人番号は既に登録されています',
+        'last_name.required' => '苗字を入力してください', 
+        'last_name.max' => '10文字以上で入力してください',
+        'first_name.required' => '苗字を入力してください', 
+        'first_name.max' => '10文字以上で入力してください',
+        'password.required' => 'パスワードを入力してください', 
+        'password.min' => 'パスワードは6文字以上で入力してください', 
+        'password.confirmed' => '入力されたパスワードが一致しません', 
+        'role_id.required' => '契約状況を選択してください', 
+        'department_id.required' => 'デパを選択してください',
+    ];
+    
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'last_name' => ['required', 'string', 'min:1', 'confirmed'], 
-            'first_name' => ['required', 'string', 'min:1', 'confirmed'], 
-            'last_name' => ['required', 'string', 'min:1', 'confirmed'], 
-            'number' => ['required', 'integer', 'min:', 'confirmed'], 
-        ]);
+        return Validator::make($data, $this->rules, $this->messages);
     }
 
     /**
@@ -69,9 +90,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'number' => $data['number'],
+            'last_name' => $data['last_name'],
+            'first_name' => $data['first_name'],
             'password' => Hash::make($data['password']),
+            'role_id' => $data['role_id'],
+            'department_id' => $data['department_id'],
         ]);
     }
 }

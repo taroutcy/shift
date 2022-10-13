@@ -10,7 +10,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="/users/edit/{{ $user->id }}">
                         @csrf
 
                         <!--個人番号-->
@@ -18,7 +18,7 @@
                             <label for="number" class="col-md-4 col-form-label text-md-right">{{ __('Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number') }}"  autofocus>
+                                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ $user->number }}"  autofocus>
                                 
                                 @error('number')
                                     <span class="invalid-feedback" role="alert">
@@ -33,7 +33,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-3">
-                                <input id="last_name" type="text" class="form-control @error('name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name">
+                                <input id="last_name" type="text" class="form-control @error('name') is-invalid @enderror" name="last_name" value="{{ $user->last_name }}" required autocomplete="last_name">
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -43,7 +43,7 @@
                             </div>
                             
                             <div class="col-md-3">
-                                <input id="first_name" type="text" class="form-control @error('name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name">
+                                <input id="first_name" type="text" class="form-control @error('name') is-invalid @enderror" name="first_name" value="{{ $user->first_name }}" required autocomplete="first_name">
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -83,9 +83,8 @@
 
                             <div class="col-md-6">
                                 <select name="role_id" id="role_id" class="form-control @error('role_id') is-invalid @enderror">
-                                    <option value="">-- 選択してください --</option>
                                     @foreach (App\Models\Role::all() as $role)
-                                    <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>{{ $role->name }}</option>
+                                    <option value="{{ $role->id }}" @if ($user->role_id == $role->id) selected @endif>{{ $role->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -103,9 +102,8 @@
 
                             <div class="col-md-6">
                                 <select name="department_id" id="department_id" class="form-control @error('department_id') is-invalid @enderror">
-                                    <option value="">-- 選択してください --</option>
                                     @foreach (App\Models\Department::all() as $department)
-                                    <option value="{{ $department->id }}" @if (old('department_id') == $department->id) selected @endif>{{ $department->name }}</option>
+                                    <option value="{{ $department->id }}" @if ($user->department_id == $department->id) selected @endif>{{ $department->name }}</option>
                                     @endforeach
                                 </select>
 

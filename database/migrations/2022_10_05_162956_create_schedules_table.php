@@ -23,10 +23,10 @@ class CreateSchedulesTable extends Migration
             $table->timestamps();
             
             // 外部キー登録
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('shift_id')->references('id')->on('shifts');
-            $table->foreign('schedule_status_id')->references('id')->on('schedule_statuses');
-            $table->foreign('work_status_id')->references('id')->on('work_statuses');
+            // $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('shift_id')->references('id')->on('shifts');
+            // $table->foreign('schedule_status_id')->references('id')->on('schedule_statuses');
+            // $table->foreign('work_status_id')->references('id')->on('work_statuses');
         });
     }
 
@@ -37,12 +37,6 @@ class CreateSchedulesTable extends Migration
      */
     public function down()
     {
-        // 外部キー制約削除
-        $table->dropForeign('schedules_user_id_foreign');
-        $table->dropForeign('schedules_shift_id_foreign');
-        $table->dropForeign('schedules_schedule_status_id_foreign');
-        $table->dropForeign('schedules_work_status_id_foreign');
-        
         Schema::dropIfExists('schedules');
     }
 }
