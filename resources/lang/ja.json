@@ -8,5 +8,7 @@
     "Register": "登録", 
     "Login": "ログイン", 
     "Remember Me": "ログイン状態を保存", 
-    "Forgot Your Password?": "パスワードを忘れた?"
+    "Forgot Your Password?": "パスワードを忘れた?", 
+    "Update": "更新", 
+    "Delete": "削除"
 }

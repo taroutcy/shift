@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 
 <table class="table">
     <tr>
@@ -20,4 +17,3 @@
         <td>{{ App\Models\Department::where('id', '=', Auth::user()->department_id)->first()->name }}</td>
     </tr>
 </table>
-@endsection

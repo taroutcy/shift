@@ -15,16 +15,16 @@
 //     return view('welcome');
 // });
 
-Route::group(['prefix' => 'users'], function() {
-    Route::get('edit/{id}', 'UserController@getEdit');
-    Route::post('edit/{id}', 'UserController@postEdit');
-    Route::get('home', 'UserController@home')->name('users.home');
-});
 
 Auth::routes([
     // 'register' => false // ユーザ登録機能をオフに切替
 ]);
 
+Route::group(['prefix' => 'users'], function() {
+    Route::get('edit/{id}', 'UserController@getEdit')->routes('users.edit');
+    Route::post('edit/{id}', 'UserController@postEdit');
+    Route::get('home', 'UserController@home')->name('users.home');
+});
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function() {
