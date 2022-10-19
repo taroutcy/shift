@@ -20,6 +20,8 @@ class ModifyUsersTable extends Migration
             $table->string('first_name', 10);
             $table->string('number', 10);
             $table->boolean('active')->default(true);
+            $table->boolean('editor')->default(false);
+            
             
             // 外部キー登録
             // $table->foreign('role_id')->references('id')->on('roles');

@@ -21,7 +21,8 @@ class UsersTableSeeder extends Seeder
                 'last_name' => '山田', 
                 'first_name' => '太郎', 
                 'number' => '0111111111',
-                'active' => '1'
+                'active' => '1', 
+                'editor' => '1'
             ],
             [
                 'id' => '2', 
@@ -31,7 +32,8 @@ class UsersTableSeeder extends Seeder
                 'last_name' => '坂本', 
                 'first_name' => '花子', 
                 'number' => '0061630090',
-                'active' => '1'
+                'active' => '1', 
+                'editor' => '0'
             ],
         ]);
     }

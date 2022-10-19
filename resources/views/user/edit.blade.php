@@ -10,7 +10,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/users/edit/{{ $user->id }}">
+                    <form method="POST" action="{{ route('user.edit.post', ['id' => $user->id])}}">
                         @csrf
 
                         <!--個人番号-->

@@ -20,12 +20,16 @@ Auth::routes([
     // 'register' => false // ユーザ登録機能をオフに切替
 ]);
 
-Route::group(['prefix' => 'users'], function() {
-    Route::get('edit/{id}', 'UserController@getEdit')->routes('users.edit');
-    Route::post('edit/{id}', 'UserController@postEdit');
-    Route::get('home', 'UserController@home')->name('users.home');
+Route::group(['prefix' => 'user'], function() {
+    Route::get('edit/{id}', 'UserController@getEdit')->name('user.edit.get');
+    Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
+    Route::get('home', 'UserController@home')->name('user.home');
+});
+Route::group(['prefix' => 'shift'], function() {
+    Route::get('post', 'ShiftController@getShift')->name('shift.post');
 });
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function() {
      // ここにログイン後のみのルーティングを記述
