@@ -26,7 +26,7 @@ Route::group(['prefix' => 'user'], function() {
     Route::get('home', 'UserController@home')->name('user.home');
 });
 Route::group(['prefix' => 'shift'], function() {
-    Route::get('post', 'ShiftController@getShift')->name('shift.post');
+    Route::get('calendar/{year?}/{month?}', 'ShiftController@getShift')->name('shift.calendar');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index');
