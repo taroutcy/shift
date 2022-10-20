@@ -4,12 +4,12 @@
 
 <div class="container">
 	<div class="row justify-content-center text-center">
-	   <div class="col-md-8">
+		<div class="col-md-8">
 			<div class="row row-cols-1 row-cols-md-2">
 				<div class="col mb-5 rounded-4">
 					<div class="card">
 						<div class="card-body">
-							<h5><a href={{ route('shift.calendar') }}>シフト提出</a></h5>
+							<h5><a href={{ route('schedule.calendar') }}>シフト提出</a></h5>
 						</div>
 					</div>
 				</div>

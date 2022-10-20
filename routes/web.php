@@ -25,8 +25,9 @@ Route::group(['prefix' => 'user'], function() {
     Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
     Route::get('home', 'UserController@home')->name('user.home');
 });
-Route::group(['prefix' => 'shift'], function() {
-    Route::get('calendar/{year?}/{month?}', 'ShiftController@getShift')->name('shift.calendar');
+Route::group(['prefix' => 'schedule'], function() {
+    Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('schedule.calendar');
+    Route::post('calendar/{year?}/{month?}', 'ScheduleController@postShift')->name('schedule.calendar.post');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index');

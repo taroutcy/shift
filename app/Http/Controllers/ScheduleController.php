@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shift;
+use App\Models\Schedule;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\View\View;
 
-class ShiftController extends Controller
+class ScheduleController extends Controller
 {
-    
     public function getShift(int $year = null, int $month = null)
     {
+        
         $weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
         $carbon = new Carbon();
@@ -37,7 +39,11 @@ class ShiftController extends Controller
             $dates[] = $firstDayOfCalendar->copy();
             $firstDayOfCalendar->addDay();
         }
+        
+        $shifts = Shift::all();
+        
+        
 
-        return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth'));
+        return view('schedule.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts'));
     }
 }
