@@ -1,3 +1,7 @@
 .row::before, .row::after {
   display: none;
 }
+
+.workStatues {
+    /*display: block;*/
+}

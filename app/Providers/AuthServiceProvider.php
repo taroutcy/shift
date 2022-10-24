@@ -25,8 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('isEditor', function($user){
+        Gate::define('isEditor', function($user) {
            return $user->editor == true; 
+        });
+        
+        Gate::define('notPart', function($user) {
+            return $user->role_id != 3;
         });
     }
 }

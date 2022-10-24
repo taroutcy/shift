@@ -20,20 +20,20 @@ Auth::routes([
     // 'register' => false // ユーザ登録機能をオフに切替
 ]);
 
-Route::group(['prefix' => 'user'], function() {
-    Route::get('edit/{id}', 'UserController@getEdit')->name('user.edit.get');
-    Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
-    Route::get('home', 'UserController@home')->name('user.home');
-});
-Route::group(['prefix' => 'schedule'], function() {
-    Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('schedule.calendar');
-    Route::post('calendar/{year?}/{month?}', 'ScheduleController@postShift')->name('schedule.calendar.post');
-});
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function() {
      // ここにログイン後のみのルーティングを記述
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index');
+    Route::group(['prefix' => 'user'], function() {
+        Route::get('edit/{id}', 'UserController@getEdit')->name('user.edit.get');
+        Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
+        Route::get('home', 'UserController@home')->name('user.home');
+    });
+    Route::group(['prefix' => 'schedule'], function() {
+        Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('schedule.calendar');
+        Route::post('calendar/{year?}/{month?}', 'ScheduleController@postShift')->name('schedule.calendar.post');
+    });
  });
  
  URL::forceScheme('https');

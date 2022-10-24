@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shift;
 use App\Models\Schedule;
+use App\Models\WorkStatus;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function getShift(int $year = null, int $month = null)
+    public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $status)
     {
-        
         $weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
         $carbon = new Carbon();
@@ -25,6 +25,7 @@ class ScheduleController extends Controller
         if ($month) {
             $carbon->setMonth($month);
         }
+        
         $carbon->setDay(1);
         $carbon->setTime(0, 0);
 
@@ -35,15 +36,16 @@ class ScheduleController extends Controller
         $endDayOfCalendar = $lastOfMonth->copy()->endOfWeek();
 
         $dates = [];
+        
         while ($firstDayOfCalendar < $endDayOfCalendar) {
             $dates[] = $firstDayOfCalendar->copy();
             $firstDayOfCalendar->addDay();
         }
         
         $shifts = Shift::all();
-        
-        
+        $schedules = $schedule->where('user_id', Auth::user()->id)->get();
+        $statuses = $status->get();
 
-        return view('schedule.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts'));
+        return view('schedule.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'statuses'));
     }
 }
