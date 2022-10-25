@@ -37,3 +37,6 @@ Route::group(['middleware' => 'auth'], function() {
  });
  
  URL::forceScheme('https');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
