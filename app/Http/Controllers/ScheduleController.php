@@ -46,6 +46,6 @@ class ScheduleController extends Controller
         $schedules = $schedule->where('user_id', Auth::user()->id)->get();
         $statuses = $status->get();
 
-        return view('schedule.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'statuses'));
+        return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'statuses'));
     }
 }
