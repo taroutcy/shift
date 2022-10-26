@@ -12,7 +12,7 @@ use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $status)
+    public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $workStatus)
     {
         $weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
@@ -44,8 +44,8 @@ class ScheduleController extends Controller
         
         $shifts = Shift::all();
         $schedules = $schedule->where('user_id', Auth::user()->id)->get();
-        $statuses = $status->get();
+        $workStatuses = $workStatus->get();
 
-        return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'statuses'));
+        return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'workStatuses'));
     }
 }
