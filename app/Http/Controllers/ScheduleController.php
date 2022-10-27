@@ -48,4 +48,28 @@ class ScheduleController extends Controller
 
         return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'workStatuses'));
     }
+    
+    public function postShift($date, Request $request)
+    {
+        $data = $request->post();
+        
+        if(isset($data['shift_id'])) {
+            Schedule::updateOrCreate(
+            ['user_id' => Auth::user()->id, 'date' => $date], 
+            ['shift_id' => $data['shift_id'], 
+             'schedule_status_id' => 1, 
+             'work_status_id' => $data['work_status_id']],
+            );
+        } else {
+            Schedule::updateOrCreate(
+            ['user_id' => Auth::user()->id, 'date' => $date], 
+            ['shift_id' => null, 
+             'schedule_status_id' => 1, 
+             'work_status_id' => $data['work_status_id']],
+            );
+        }
+        
+        
+        return redirect()->route('shift.calendar.edit');
+    }
 }

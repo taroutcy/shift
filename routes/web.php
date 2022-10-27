@@ -31,16 +31,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('home', 'UserController@home')->name('user.home');
     });
     Route::group(['prefix' => 'shift'], function() {
-        Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('shift.calendar');
-        Route::post('calendar/{year?}/{month?}', 'ScheduleController@postShift')->name('shift.calendar.post');
+        Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('shift.calendar.edit');
+        Route::post('calendar/{date?}', 'ScheduleController@postShift')->name('shift.calendar.post');
     });
  });
  
  URL::forceScheme('https');
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

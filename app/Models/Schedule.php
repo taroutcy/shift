@@ -26,4 +26,12 @@ class Schedule extends Model
         return $this->belongsTo('App\Models\WorkStatus');
     }
     
+    protected $fillable = [
+        'user_id',
+        'shift_id',
+        'schedule_status_id',
+        'work_status_id', 
+        'date'
+        ];
+    
 }

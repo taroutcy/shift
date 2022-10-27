@@ -16,7 +16,7 @@
             </p>
             <div class="input-group">
                 <div class="mr-2">
-                    <a href="{{ route('shift.calendar', 
+                    <a href="{{ route('shift.calendar.edit', 
                     ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
                     'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}">
                         <
@@ -26,7 +26,7 @@
                     {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
                 </h3>
                 <div class="ml-2">
-                    <a href="{{ route('shift.calendar', 
+                    <a href="{{ route('shift.calendar.edit', 
                     ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
                     'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}">
                         >
@@ -62,9 +62,21 @@
                                 "
                             >
                                 <div>{{ $date->format('j') }}</div>
+                                
                                 @if ($date->month == $firstDayOfMonth->month)
-                                    <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ App\Models\Schedule::all()->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                    @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
+                                        <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                    @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
+                                        @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 1)
+                                            <!--シフトが"提出状態"の場合-->
+                                            <button type="button" class="btn btn-link text-danger"  data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                        @else
+                                            <!--シフトが確定した場合-->
+                                            <button disabled type="button" class="btn btn-link text-primary" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                        @endif
+                                    @endif
                                 @endif
+                                
                                 <!--カレンダーにシフトの時間・欠勤・有給を表示-->
                                 @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
                                     @switch($schedule->work_status_id)
@@ -89,7 +101,15 @@
                                 @endforelse
                                     
                                 @if ($date->month == $firstDayOfMonth->month)
-                                    </button>
+                                    @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
+                                        </button>
+                                    @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
+                                        @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 2)
+                                            </button>
+                                        @else
+                                            </button>
+                                        @endif
+                                    @endif
                                 @endif
                                 
                                 <!--モーダル-->
@@ -105,44 +125,43 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body text-dark">
-                                                <form method="POST" action="{{ route('shift.calendar.post') }}" name="modal{{ $date->format('Ymd') }}">
+                                                <form method="POST" action="{{ route('shift.calendar.post', ['date' => $date->format('Y-m-d')]) }}" name="form{{ $date->format('Ymd') }}">
                                                 @csrf
                                                     <p>
-                                                        <br>
-                                                            @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                                                <label><input type="radio" name="work_status_id" value="1" onclick='$("#shift{{ $date->format('Ymd') }}").removeAttr("disabled");' @if($schedule->workStatus->name == '出勤') checked @endif>
-                                                                    出勤
+                                                    <br>
+                                                        @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                                            <label><input type="radio" name="work_status_id" value="1" onclick='$("#shift{{ $date->format('Ymd') }}").removeAttr("disabled");' @if($schedule->workStatus->name == '出勤') checked @endif>
+                                                                出勤
+                                                            </label>
+                                                            <label><input type="radio" name="work_status_id" value="2" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' @if($schedule->workStatus->name == '欠勤') checked @endif>
+                                                                欠勤
+                                                            </label>
+                                                        	@can('notPart')
+                                                                <label><input type="radio" name="work_status_id" value="3" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' @if($schedule->workStatus->name == '有給') checked @endif>
+                                                                    有給
                                                                 </label>
-                                                                <label><input type="radio" name="work_status_id" value="2" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' @if($schedule->workStatus->name == '欠勤') checked @endif>
-                                                                    欠勤
+                                                            @endcan
+                                                        @endforeach
+                                                        
+                                                        @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                                        @empty
+                                                            <label><input type="radio" name="work_status_id" value="1" onclick='$("#shift{{ $date->format('Ymd') }}").removeAttr("disabled");'>
+                                                                出勤
+                                                            </label>
+                                                            <label><input type="radio" name="work_status_id" value="2" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' checked>
+                                                                欠勤
+                                                            </label>
+                                                        	@can('notPart')
+                                                                <label><input type="radio" name="work_status_id" value="3" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");'>
+                                                                    有給
                                                                 </label>
-                                                            	@can('notPart')
-                                                                    <label><input type="radio" name="work_status_id" value="3" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' @if($schedule->workStatus->name == '有給') checked @endif>
-                                                                        有給
-                                                                    </label>
-                                                                @endcan
-                                                            @endforeach
-                                                            
-                                                            @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                                            @empty
-                                                                <label><input type="radio" name="work_status_id" value="1" onclick='$("#shift{{ $date->format('Ymd') }}").removeAttr("disabled");'>
-                                                                    出勤
-                                                                </label>
-                                                                <label><input type="radio" name="work_status_id" value="2" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");' checked>
-                                                                    欠勤
-                                                                </label>
-                                                            	@can('notPart')
-                                                                    <label><input type="radio" name="work_status_id" value="3" onclick='$("#shift{{ $date->format('Ymd') }}").attr("disabled", "disabled");'>
-                                                                        有給
-                                                                    </label>
-                                                                @endcan
-                                                            @endforelse
-                                                            
+                                                            @endcan
+                                                        @endforelse
                                                     </p>
                                                     
                                                     <!--シフトの時間を選択-->
-                                                    <select name="shift_id" id="shift{{ $date->format('Ymd') }}">
-                                                        <option value=""  disabled selected>-- 選択してください --</option>
+                                                    <select name="shift_id" id="shift{{ $date->format('Ymd') }}" required="required">
+                                                        <option value="" disabled hidden>-- 選択してください --</option>
                                                             @foreach($shifts as $shift)
                                                                 @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
                                                                     <option value="{{ $shift->id }}" @if($shift->id == $schedule->shift_id) selected @endif> {{ $shift->name }}: {{ date('G:i', strtotime($shift->start_time)) }}-{{ date('G:i', strtotime($shift->end_time)) }}</option>
@@ -155,6 +174,12 @@
                                                             @endforeach
                                                     </select>
                                                     
+                                                
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">OK</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="document.form{{ $date->format('Ymd') }}.reset();">キャンセル</button>
+                                                    </div>
+                                                    
                                                     <script>
                                                         function manageDispSelect(work_status_id, date) {
                                                             let select = document.getElementById('shift' + date);
@@ -165,15 +190,19 @@
                                                                 select.disabled = true;
                                                             }
                                                         }
+                                                        
+                                                        function inShiftSlect(id) {
+                                                            let select = document.getElementById('shift' + id);
+                                                            
+                                                            if (select.value) {
+                                                               return true;
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        }
                                                     </script>
-                                                
+                                                </form>
                                             </div>
-                                            <div class="modal-footer">
-                                                <input type="submit" class="btn btn-primary" value="OK">
-                                                <input type="reset" class="btn btn-secondary" data-dismiss="modal" value="キャンセル" onClick="document.modal{{ $date->format('Ymd') }}.reset();">
-                                            </div>
-                                            
-                                            </form>
                                         </div>
                                     </div>
                                 </div>

@@ -9,7 +9,7 @@
 				<div class="col mb-5 rounded-4">
 					<div class="card">
 						<div class="card-body">
-							<h5><a href={{ route('shift.calendar') }}>シフト提出</a></h5>
+							<h5><a href={{ route('shift.calendar.edit') }}>シフト提出</a></h5>
 						</div>
 					</div>
 				</div>

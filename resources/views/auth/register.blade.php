@@ -85,7 +85,7 @@
                                 <select name="role_id" id="role_id" class="form-control @error('role_id') is-invalid @enderror">
                                     <option value="">-- 選択してください --</option>
                                     @foreach (App\Models\Role::all() as $role)
-                                        <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>{{ $role->name }}</option>
+                                    <option value="{{ $role->id }}" @if (old('role_id') == $role->id) selected @endif>{{ $role->name }}</option>
                                     @endforeach
                                 </select>
 
