@@ -47,6 +47,27 @@ class UserController extends Controller
         return redirect()->route('user.home');
     }
     
+    public function getRegister()
+    {
+        return view('user.register');
+    }
+    
+    public function postRegister(Request $request)
+    {
+        $data = $request->post();
+        
+        User::create([
+            'number' => $data['number'],
+            'last_name' => $data['last_name'],
+            'first_name' => $data['first_name'],
+            'password' => Hash::make($data['password']),
+            'role_id' => $data['role_id'],
+            'department_id' => $data['department_id'],
+        ]);
+        
+        return redirect()->route('user.home');
+    }
+    
     public function home(User $user)
     {
         return view('user.home')->with(['users' => $user->get()]);

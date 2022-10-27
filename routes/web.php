@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('edit/{id}', 'UserController@getEdit')->name('user.edit.get');
         Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
         Route::get('home', 'UserController@home')->name('user.home');
+        Route::get('register', 'UserController@getRegister')->name('user.register.get');
+        Route::post('register', 'UserController@postRegister')->name('user.register.post');
     });
     Route::group(['prefix' => 'shift'], function() {
         Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('shift.calendar.edit');
