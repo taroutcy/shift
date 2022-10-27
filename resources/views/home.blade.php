@@ -16,7 +16,7 @@
 				<div class="col mb-5">
 					<div class="card">
 						<div class="card-body">
-							<h5>シフト確認</h5>
+							<h5><a href={{ route('shift.check') }}>シフト確認</a></h5>
 						</div>
 					</div>
 				</div>

@@ -4,7 +4,6 @@
 <div class="container"> 
     <p>
         <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
-            <!--&lt;back&gt;-->
             back
         </button>
     </p>

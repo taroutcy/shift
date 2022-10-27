@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'shift'], function() {
         Route::get('calendar/{year?}/{month?}', 'ScheduleController@getShift')->name('shift.calendar.edit');
         Route::post('calendar/{date?}', 'ScheduleController@postShift')->name('shift.calendar.post');
+        Route::get('check/{year?}/{month?}','ScheduleController@checkShift')->name('shift.check');
     });
  });
  

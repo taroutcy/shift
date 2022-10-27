@@ -24,7 +24,7 @@
                 </div>
                 <h4>
                     {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
-                </h3>
+                </h4>
                 <div class="ml-2">
                     <a href="{{ route('shift.calendar.edit', 
                     ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
