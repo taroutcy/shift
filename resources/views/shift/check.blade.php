@@ -17,9 +17,9 @@
             <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">
                 <thead>
                     <tr>
-                        <th scope="col" style="width:80px; ">名前</th>
+                        <th scope="col" style="width:90px; ">名前</th>
                         @foreach($dates as $date)
-                            <th  class="text-align-center" scope="col" style="width:38px;">
+                            <th scope="col" style="width:35px;">
                                 {{ $date->format('j') }}
                             </th>
                         @endforeach
@@ -32,7 +32,7 @@
                                 {{ $user->last_name }}
                             </td>
                             @foreach($dates as $date)
-                                @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
+                                @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d'))->where('schedule_status_id', 2) as $schedule)
                                 <td class="text-danger">
                                     @if($schedule->workStatus->name == '出勤')
                                         {{ $schedule->shift->name }}
@@ -44,11 +44,11 @@
                                 </td>
                                 @endforeach
                                 
-                                @forelse($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                                @empty
-                                <td class="text-danger">
-                                    ×   
-                                </td>
+                                <!--@forelse($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)-->
+                                <!--@empty-->
+                                <!--<td class="text-danger">-->
+                                <!--    ×   -->
+                                <!--</td>-->
                                 
                                 @endforelse
                                 
