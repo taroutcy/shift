@@ -27,10 +27,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'HomeController@index');
     
     Route::group(['prefix' => 'user'], function() {
+        Route::get('register', 'UserController@getRegister')->name('user.register.get');
         Route::get('edit/{id}', 'UserController@getEdit')->name('user.edit.get');
         Route::post('edit/{id}', 'UserController@postEdit')->name('user.edit.post');
         Route::get('home', 'UserController@home')->name('user.home');
-        Route::get('register', 'UserController@getRegister')->name('user.register.get');
         Route::post('register', 'UserController@postRegister')->name('user.register.post');
     });
     

@@ -10,9 +10,23 @@
     <div class="col-md-2">
         <div class="row justify-content-center">
             <div class="input-group">
+                <div class="mr-2">
+                    <a href="{{ route('shift.check', 
+                    ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}">
+                        <
+                    </a>
+                </div>
                 <h4>
                     {{ $firstDayOfMonth->copy()->format('Y-n') }}
                 </h4>
+                <div class="ml-2">
+                    <a href="{{ route('shift.check', 
+                    ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}">
+                        >
+                    </a>
+                </div>
             </div>
             <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">
                 <thead>

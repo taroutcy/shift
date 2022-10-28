@@ -22,7 +22,7 @@
                 @foreach($users->where('role_id', 1)->sortByDesc('active') as $user)
                     <a href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                         @if($user->active == true)
-                            <div>{{ $user->last_name }}{{ $user->first_name }}</div>
+                            <div>{{ $user->last_name }} {{ $user->first_name }}</div>
                         @else
                             <div class="text-muted">{{ $user->last_name }}{{ $user->first_name }}</div>
                         @endif
@@ -36,7 +36,7 @@
                 @foreach($users->where('role_id', 2)->sortByDesc('active') as $user)
                     <a href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                         @if($user->active == true)
-                            <div>{{ $user->last_name }}{{ $user->first_name }}</div>
+                            <div>{{ $user->last_name }} {{ $user->first_name }}</div>
                         @else
                             <div class="text-muted">{{ $user->last_name }}{{ $user->first_name }}</div>
                         @endif
@@ -50,7 +50,7 @@
                @foreach($users->where('role_id', 3)->sortByDesc('active') as $user)
                     <a href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                         @if($user->active == true)
-                            <div>{{ $user->last_name }}{{ $user->first_name }}</div>
+                            <div>{{ $user->last_name }} {{ $user->first_name }}</div>
                         @else
                             <div class="text-muted">{{ $user->last_name }}{{ $user->first_name }}</div>
                         @endif
