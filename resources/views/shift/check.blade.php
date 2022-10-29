@@ -2,13 +2,14 @@
 
 @section('content')
 <div class="container">
-    <p>
-        <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
-            back
-        </button>
-    </p>
-    <div class="col-md-2">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <p>
+                <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
+                    back
+                </button>
+            </p>
+        </div>
             <div class="input-group">
                 <div class="mr-2">
                     <a href="{{ route('shift.check', 
@@ -72,7 +73,6 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
     
