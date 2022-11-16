@@ -2,17 +2,32 @@
 
 @section('content')
 <div class="container">
-    <p>
-        <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
-            &#9666; home
-        </button>
-    </p>
-    <div class="col-md-2">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <p>
+                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+                    &#9666; home
+                </button>
+            </p>
+        </div>
             <div class="input-group">
+                <div class="mr-2">
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.confirm.get', 
+                    ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}"'>
+                        <
+                    </button>
+                </div>
                 <h4>
-                    {{ $firstDayOfMonth->copy()->format('Y-n') }}
+                    {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
                 </h4>
+                <div class="ml-2">
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.confirm.get', 
+                    ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}"'>
+                        >
+                    </button>
+                </div>
             </div>
             <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">
                 <thead>
@@ -58,7 +73,6 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
     
