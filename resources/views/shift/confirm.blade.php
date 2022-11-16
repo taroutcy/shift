@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <p>
-                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
-                    &#9666; home
-                </button>
-            </p>
-        </div>
+    <p>
+        <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+            &#9666; home
+        </button>
+         <h2>シフト作成</h2>
+    </p>
+    <div class="col-md-2">
+        <div class="row justify-content-center">
             <div class="input-group">
                 <div class="mr-2">
                     <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.confirm.get', 
