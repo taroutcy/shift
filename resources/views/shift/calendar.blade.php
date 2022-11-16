@@ -10,9 +10,6 @@
                 </button>
                 <h2>シフト提出</h2>
             </p>
-            <p class="h2">
-                シフト提出
-            </p>
             <p>
                 <div class="input-group">
                     <div class="mr-2">
