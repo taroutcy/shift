@@ -7,8 +7,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <p>
-                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
-                    back
+                <button type='button' class='btn-back' onClick='location.href="{{ route('user.home') }}"'>
+                    &#9666; back
                 </button>
             </p>
             <div class="card">

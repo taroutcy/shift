@@ -27,7 +27,7 @@
                             @foreach($users->where('role_id', 1)->sortByDesc('active') as $user)
                                 <p>
                                     @if($user->active == true)
-                                        <a class="text-success" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
+                                        <a class="text-body" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                                     @else
                                         <font class="text-muted">
                                     @endif
@@ -49,7 +49,7 @@
                             @foreach($users->where('role_id', 2)->sortByDesc('active') as $user)
                                 <p>
                                     @if($user->active == true)
-                                        <a class="text-success" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
+                                        <a class="text-body" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                                     @else
                                         <font class="text-muted">
                                     @endif
@@ -71,7 +71,7 @@
                            @foreach($users->where('role_id', 3)->sortByDesc('active') as $user)
                                 <p>
                                     @if($user->active == true)
-                                        <a class="text-success" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
+                                        <a class="text-body" href="{{ route('user.edit.get', ['id' => $user->id]) }}">
                                     @else
                                         <font class="text-muted">
                                     @endif
