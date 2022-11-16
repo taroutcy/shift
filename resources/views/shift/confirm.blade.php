@@ -8,8 +8,8 @@
                 <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                     &#9666; home
                 </button>
+                <h2>シフト作成</h2>
             </p>
-            <h2>シフト作成</h2>
         </div>
         <div class="input-group">
             <div class="mr-2">
