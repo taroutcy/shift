@@ -5,28 +5,28 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <p>
-                <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
-                    back
+                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+                    &#9666; home
                 </button>
             </p>
         </div>
             <div class="input-group">
                 <div class="mr-2">
-                    <a href="{{ route('shift.check', 
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
                     ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
-                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}">
+                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}"'>
                         <
-                    </a>
+                    </button>
                 </div>
                 <h4>
-                    {{ $firstDayOfMonth->copy()->format('Y-n') }}
+                    {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
                 </h4>
                 <div class="ml-2">
-                    <a href="{{ route('shift.check', 
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
                     ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
-                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}">
+                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}"'>
                         >
-                    </a>
+                    </button>
                 </div>
             </div>
             <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">

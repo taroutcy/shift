@@ -6,8 +6,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <p>
+                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+                    back
+                </button>
+            </p>
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Update') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.edit.post', ['id' => $user->id])}}">

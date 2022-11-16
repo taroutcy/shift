@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
     <p>
-        <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
-            back
+        <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+            &#9666; home
         </button>
     </p>
     <div class="col-md-2">

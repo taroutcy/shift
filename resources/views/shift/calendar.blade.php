@@ -5,33 +5,32 @@
     <div class="row justify-content-center">
         <div class="col-md-9">
             <p>
-                <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('home') }}"'>
-                    <!--&lt;back&gt;-->
-                    back
+                <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
+                    &#9666; home
                 </button>
             </p>
             <div class="input-group">
                 <div class="mr-2">
-                    <a href="{{ route('shift.calendar.edit', 
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.calendar.edit', 
                     ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
-                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}">
+                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}"'>
                         <
-                    </a>
+                    </button>
                 </div>
                 <h4>
                     {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
                 </h4>
                 <div class="ml-2">
-                    <a href="{{ route('shift.calendar.edit', 
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.calendar.edit', 
                     ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
-                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}">
+                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}"'>
                         >
-                    </a>
+                    </button>
                 </div>
             </div>
             <table class="table text-center">
                 <thead>
-                    <tr class="h4">
+                    <tr class="h5">
                         @foreach($weeks as $i => $week)
                             <th @if ($i==\Carbon\Carbon::SUNDAY) 
                                     class="text-danger"
@@ -44,7 +43,7 @@
                         @endforeach
                     </tr>
                 </thead>
-                <tbody class="h5">
+                <tbody class="">
                         
                         
                     @foreach($dates as $date)
@@ -59,21 +58,22 @@
                             >
                                 <div>{{ $date->format('j') }}</div>
                                 
-                                @if ($date->month == $firstDayOfMonth->month)
-                                    @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
-                                        <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
-                                    @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
-                                        @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 1)
-                                            <!--シフトが"提出状態"の場合-->
-                                            <button type="button" class="btn btn-link text-danger"  data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
-                                        @else
-                                            <!--シフトが確定した場合-->
-                                            <button disabled type="button" class="btn btn-link text-primary" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                    @if ($date->month == $firstDayOfMonth->month)
+                                        @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
+                                            <button type="button" class="btn btn-light btn-lg text-danger" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                        @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
+                                            @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 1)
+                                                <!--シフトが"提出状態"の場合-->
+                                                <button type="button" class="btn btn-light btn-lg  text-danger"  data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                            @else
+                                                <!--シフトが確定した場合-->
+                                                <button disabled type="button" class="btn btn-light btn-lg text-primary" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedules->where('date', date($date->format('Y-m-d')))->first()->work_status_id ?? 0 }}, {{ $date->format('Ymd') }});">
+                                            @endif
                                         @endif
+                                    @else
+                                        <button disabled type="button" class="btn btn-lg text-light" data-toggle="modal" data-target="#modal{{ $date->format('Ymd') }}">
                                     @endif
-                                @endif
                                 
-                                <div class="h5">
                                     <!--カレンダーにシフトの時間・欠勤・有給を表示-->
                                     @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
                                         @switch($schedule->work_status_id)
@@ -96,19 +96,21 @@
                                     @empty
                                         ×
                                     @endforelse
-                                </div>
                                     
-                                @if ($date->month == $firstDayOfMonth->month)
-                                    @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
-                                        </button>
-                                    @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
-                                        @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 2)
+                                
+                                    @if ($date->month == $firstDayOfMonth->month)
+                                        @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
                                             </button>
-                                        @else
-                                            </button>
+                                        @elseif(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id))
+                                            @if($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id == 2)
+                                                </button>
+                                            @else
+                                                </button>
+                                            @endif
                                         @endif
+                                    @else
+                                        </button>
                                     @endif
-                                @endif
                                 
                                 <!--モーダル-->
                                 <div class="modal fade" id="modal{{ $date->format('Ymd') }}" role="dialog" aria-labelledby="label1" aria-hidden="true" data-backdrop="static">
