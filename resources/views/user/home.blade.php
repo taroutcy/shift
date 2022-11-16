@@ -10,7 +10,7 @@
     <div class='row input-group'>
             <h2 class='mr-4'>従業員管理</h2>
             <span class="input-group-btn">
-                <button type='button' class='btn btn-sm btn-outline-primary' onClick='location.href="{{ route('user.register.get') }}"'>
+                <button type='button' class='btn btn-sm btn-outline-success' onClick='location.href="{{ route('user.register.get') }}"'>
                     {{ __('Register') }}
                 </button>
             </span>

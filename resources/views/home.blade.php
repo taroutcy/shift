@@ -4,38 +4,38 @@
 
 <div class="container">
 	<div class="row justify-content-center text-center">
-		<div class="col-md-8">
-			<div class="row row-cols-1 row-cols-md-2">
-				<div class="col mb-5 rounded-4">
-					<div class="card">
-						<div class="card-body">
-							<h5><a href={{ route('shift.calendar.edit') }}>シフト提出</a></h5>
-						</div>
+		<div class="
+		@can('isEditor')
+		col-md-7
+		@else
+		col-md-4
+		@endcan
+		">
+			<p>
+				<h2>Home</h2>
+			</p>
+			<div class="card bg-transparent">
+				<div class="card-body">
+					<div class="d-flex justify-content-between">
+						<button type="button" class='btn btn-lg btn-outline-secondary' onClick='location.href="{{ route('shift.calendar.edit') }}"'>
+							シフト提出
+						</button>
+						
+						<button type="button" class='btn btn-lg btn-outline-secondary' onClick='location.href="{{ route('shift.check') }}"'>
+							シフト確認
+						</button>
+						
+						@can('isEditor')
+						<button type="button" class='btn btn-lg btn-outline-secondary' onClick='location.href="{{ route('shift.confirm.get') }}"'>
+							シフト作成
+						</button>
+						
+						<button type="button" class='btn btn-lg btn-outline-secondary' onClick='location.href="{{ route('user.home') }}"'>
+							従業員管理
+						</button>
+						@endcan
 					</div>
 				</div>
-				<div class="col mb-5">
-					<div class="card">
-						<div class="card-body">
-							<h5><a href={{ route('shift.check') }}>シフト確認</a></h5>
-						</div>
-					</div>
-				</div>
-				@can('isEditor')
-				<div class="col mb-5">
-					<div class="card">
-						<div class="card-body">
-							<h5><a href="{{ route('shift.confirm.get') }}">シフト作成</a></h5>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card">
-						<div class="card-body">
-							<h5><a href={{ route('user.home') }}>従業員管理</h5>
-						</div>
-					</div>
-				</div>
-				@endcan
 			</div>
 		</div>
 	</div>
