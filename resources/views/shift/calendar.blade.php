@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9">
@@ -35,7 +31,7 @@
             </div>
             <table class="table text-center">
                 <thead>
-                    <tr>
+                    <tr class="h4">
                         @foreach($weeks as $i => $week)
                             <th @if ($i==\Carbon\Carbon::SUNDAY) 
                                     class="text-danger"
@@ -48,7 +44,7 @@
                         @endforeach
                     </tr>
                 </thead>
-                <tbody class="">
+                <tbody class="h5">
                         
                         
                     @foreach($dates as $date)
@@ -77,28 +73,30 @@
                                     @endif
                                 @endif
                                 
-                                <!--カレンダーにシフトの時間・欠勤・有給を表示-->
-                                @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                    @switch($schedule->work_status_id)
-                                        @case($workStatuses->where('name', '出勤')->first()->id)
-                                            <!--シフトの種類を表示-->
-                                            {{ $schedule->shift->name }}
-                                            @break
-                                        <!--欠勤の場合-->
-                                        @case($workStatuses->where('name', '欠勤')->first()->id)
-                                            ×
-                                            @break
-                                        <!--有給の場合-->
-                                        @case($workStatuses->where('name', '有給')->first()->id)
-                                            有給
-                                            @break
-                                    @endswitch
-                                @endforeach
-                                
-                                @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                @empty
-                                    ×
-                                @endforelse
+                                <div class="h5">
+                                    <!--カレンダーにシフトの時間・欠勤・有給を表示-->
+                                    @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                        @switch($schedule->work_status_id)
+                                            @case($workStatuses->where('name', '出勤')->first()->id)
+                                                <!--シフトの種類を表示-->
+                                                {{ $schedule->shift->name }}
+                                                @break
+                                            <!--欠勤の場合-->
+                                            @case($workStatuses->where('name', '欠勤')->first()->id)
+                                                ×
+                                                @break
+                                            <!--有給の場合-->
+                                            @case($workStatuses->where('name', '有給')->first()->id)
+                                                有給
+                                                @break
+                                        @endswitch
+                                    @endforeach
+                                    
+                                    @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                    @empty
+                                        ×
+                                    @endforelse
+                                </div>
                                     
                                 @if ($date->month == $firstDayOfMonth->month)
                                     @if(isset($schedules->where('date', date($date->format('Y-m-d')))->first()->schedule_status_id) == false)
@@ -160,19 +158,21 @@
                                                     </p>
                                                     
                                                     <!--シフトの時間を選択-->
-                                                    <select name="shift_id" id="shift{{ $date->format('Ymd') }}" required="required">
-                                                        <option value="" disabled hidden>-- 選択してください --</option>
-                                                            @foreach($shifts as $shift)
-                                                                @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                                                    <option value="{{ $shift->id }}" @if($shift->id == $schedule->shift_id) selected @endif> {{ $shift->name }}: {{ date('G:i', strtotime($shift->start_time)) }}-{{ date('G:i', strtotime($shift->end_time)) }}</option>
+                                                    <div class="row justify-content-center">
+                                                        <select class="form-control w-50" name="shift_id" id="shift{{ $date->format('Ymd') }}" required="required">
+                                                            <option value="" disabled hidden>-- 選択してください --</option>
+                                                                @foreach($shifts as $shift)
+                                                                    @foreach($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                                                        <option value="{{ $shift->id }}" @if($shift->id == $schedule->shift_id) selected @endif> {{ $shift->name }} : {{ date('G:i', strtotime($shift->start_time)) }}-{{ date('G:i', strtotime($shift->end_time)) }}</option>
+                                                                    @endforeach
+                                                                    
+                                                                    @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
+                                                                    @empty
+                                                                        <option value="{{ $shift->id }}"> {{ $shift->name }}: {{ date('G:i', strtotime($shift->start_time)) }}-{{ date('G:i', strtotime($shift->end_time)) }}</option>
+                                                                    @endforelse
                                                                 @endforeach
-                                                                
-                                                                @forelse($schedules->where('date', date($date->format('Y-m-d'))) as $schedule)
-                                                                @empty
-                                                                    <option value="{{ $shift->id }}"> {{ $shift->name }}: {{ date('G:i', strtotime($shift->start_time)) }}-{{ date('G:i', strtotime($shift->end_time)) }}</option>
-                                                                @endforelse
-                                                            @endforeach
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                     
                                                 
                                                     <div class="modal-footer">
