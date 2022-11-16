@@ -6,6 +6,7 @@
         <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
             &#9666; home
         </button>
+         <h2>シフト作成</h2>
     </p>
     <div class="col-md-2">
         <div class="row justify-content-center">
