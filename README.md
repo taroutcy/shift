@@ -67,7 +67,7 @@
 
 ### 仕様
 10桁の個人番号とパスワードを入力するとログインできます．
-<img width="600" src="https://user-images.githubusercontent.com/38804704/202111358-e221cb0e-a5cd-413a-92dd-b12d7e6f54be.png">
+<img width="450" src="https://user-images.githubusercontent.com/38804704/202211499-d0b8f575-e185-440f-84c5-a50f5a7f0ea4.png">
 
 ログイン後は編集権限の有無によって表示画面が変わります．(左:編集権限有, 右:編集権限無)
 <p style="align-items: center">
