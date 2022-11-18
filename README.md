@@ -10,7 +10,7 @@
 スタッフはシフトの提出と確認のみを行うことができます．  
 
 ## デモ
-<a href="https://salty-ravine-24071.herokuapp.com/">デモ</a>で試すことができます．
+<a href="https://salty-ravine-24071.herokuapp.com/">こちら</a>で試すことができます．
 
 管理者  
 個人番号: 0000000000  
@@ -80,8 +80,8 @@
 #### シフト提出
 シフトの提出は以下のカレンダー形式で行うことができます．日付の中をクリックするとモーダルが表示されシフトを選択することができます．
 <p style="align-items: center">
-<img width="460" src="https://user-images.githubusercontent.com/38804704/202111800-e743ae3b-c59c-47f4-bd06-e9a1b074f82b.png">
-<img width="539" src="https://user-images.githubusercontent.com/38804704/202101571-0dc2ec5b-48d7-4374-a63b-229dc20e0999.png">
+<img width="460" src="https://user-images.githubusercontent.com/38804704/202591468-954e2e1a-a72e-433e-8218-68cc6d139584.png">
+<img width="539" src="https://user-images.githubusercontent.com/38804704/202591562-8ef51339-35fe-4a3e-978f-c069e554ad61.png">
 </p>
 
 出勤・欠勤・有給のいずれかを選択し，OKを押すとカレンダー一覧に提出したシフトが反映されます．
