@@ -3,16 +3,16 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-5">
             <p>
                 <button type='button' class='btn-back' onClick='location.href="{{ route('user.home') }}"'>
                     &#9666; back
                 </button>
             </p>
-            <div class="card">
-                <div class="card-header h5">{{ __('Register') }}</div>
+            <div class="card border-0 bg-transparent">
+                <div class="card-header h3 text-center bg-transparent">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.register.post') }}">
@@ -89,7 +89,7 @@
                         
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-outline-primary">
                                     {{ __('Register') }}
                                 </button>
                             </div>

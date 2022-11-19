@@ -1,79 +1,87 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <p>
                 <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                     &#9666; home
                 </button>
                 <h2>シフト確認</h2>
             </p>
-        </div>
-        <div class="input-group">
-            <div class="mr-2">
-                <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
-                ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
-                'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}"'>
-                    <
-                </button>
+            <div class="input-group">
+                <div class="mr-2">
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
+                    ['year' => $firstDayOfMonth->copy()->subMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->subMonth()->month]) }}"'>
+                        <
+                    </button>
+                </div>
+                <h4>
+                    {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
+                </h4>
+                <div class="ml-2">
+                    <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
+                    ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
+                    'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}"'>
+                        >
+                    </button>
+                </div>
             </div>
-            <h4>
-                {{ $firstDayOfMonth->copy()->year }}-{{ $firstDayOfMonth->copy()->month }}
-            </h4>
-            <div class="ml-2">
-                <button type='button' class="btn btn-sm btn-light input-group-btn" onClick='location.href="{{ route('shift.check', 
-                ['year' => $firstDayOfMonth->copy()->addMonth()->year, 
-                'month' => $firstDayOfMonth->copy()->addMonth()->month]) }}"'>
-                    >
-                </button>
-            </div>
-        </div>
-        <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">
-            <thead>
-                <tr>
-                    <th scope="col" style="width:90px; ">名前</th>
-                    @foreach($dates as $date)
-                        <th scope="col" style="width:35px;">
-                            {{ $date->format('j') }}
-                        </th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                    @foreach($users as $user)
-                    <tr>
-                        <td>
-                            {{ $user->last_name }}
-                        </td>
-                        @foreach($dates as $date)
-                            @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                            <td class="text-danger">
-                                @if($schedule->workStatus->name == '出勤')
-                                    {{ $schedule->shift->name }}
-                                @elseif($schedule->workStatus->name == '有給')
-                                    有
-                                @else
-                                    ×
-                                @endif
-                            </td>
+            <div class="table-responsive">
+                <table class="table text-center table-hover table-striped"  style="table-layout:fixed;">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:90px; ">名前</th>
+                            @foreach($dates as $date)
+                                <th scope="col" style="width:35px;">
+                                    {{ $date->format('j') }}
+                                </th>
                             @endforeach
-                            
-                            @forelse($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                            @empty
-                            <td class="text-danger">
-                                ×   
-                            </td>
-                            
-                            @endforelse
-                            
-                            
+                        </tr>
+                    </thead>
+                    <tbody class="table-borderless">
+                            @foreach($users as $user)
+                            <tr>
+                                <td class="h5">
+                                    <font class="h6">
+                                        {{ $user->last_name }}
+                                    </font>
+                                </td>
+                                @foreach($dates as $date)
+                                    @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
+                                    <td class="text-danger h5">
+                                        @if($schedule->workStatus->name == '出勤')
+                                            {{ $schedule->shift->name }}
+                                        @elseif($schedule->workStatus->name == '有給')
+                                            有
+                                        @else
+                                            <font class="h6">
+                                                ×
+                                            </font>
+                                        @endif
+                                    </td>
+                                    @endforeach
+                                    
+                                    @forelse($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
+                                    @empty
+                                    <td class="text-danger h5">
+                                        <font class="h6">
+                                                ×
+                                        </font>
+                                    </td>
+                                    
+                                    @endforelse
+                                    
+                                    
+                                @endforeach
+                            </tr>
                         @endforeach
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
     

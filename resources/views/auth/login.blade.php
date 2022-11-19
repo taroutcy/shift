@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card bg-transparent text-center border-0">
@@ -13,9 +13,9 @@
                         @csrf
                         
                         <div class="form-group row card-text">
-                            <label for="number" class="col-md-4 col-form-label text-md-right"><font class="h5">{{ __('Number') }}</font></label>
+                            <label for="number" class="col-md-4 col-form-label text-md-right"><font class="h6">{{ __('Number') }}</font></label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" minlength="10" maxlength="10" required>
 
                                 @error('number')
@@ -27,9 +27,9 @@
                         </div>
 
                         <div class="form-group row card-text">
-                            <label for="password" class="col-md-4 col-form-label text-md-right"><font class="h5">{{ __('Password') }}</font></label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right"><font class="h6">{{ __('Password') }}</font></label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                 @error('password')

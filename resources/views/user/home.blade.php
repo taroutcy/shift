@@ -2,23 +2,22 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-<div class="container"> 
+<div class="container-fluid"> 
     <div class="row justify-content-center">
-        <p class="col-md-9">
+        <div class="col-md-5">
+        <p>
             <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                 &#9666; home
             </button>
         </p>
-        <div class="col-md-8">
-            <div class='input-group'>
-                <h2 class='mr-3'>従業員管理</h2>
-                <span class="input-group-btn">
-                    <button type='button' class='btn btn-sm btn-outline-danger' onClick='location.href="{{ route('user.register.get') }}"'>
-                        {{ __('Register') }}
-                    </button>
-                </span>
-            </div>
-            
+        <div class='input-group'>
+            <h2 class='mr-3'>従業員管理</h2>
+            <span class="input-group-btn">
+                <button type='button' class='btn btn-sm btn-outline-danger' onClick='location.href="{{ route('user.register.get') }}"'>
+                    {{ __('Register') }}
+                </button>
+            </span>
+        </div>
             <p>
                 <div class="card-deck">
                     <div class="card border-0 bg-transparent">
