@@ -89,7 +89,7 @@
                                                 @break
                                             <!--有給の場合-->
                                             @case($workStatuses->where('name', '有給')->first()->id)
-                                                有給
+                                                有
                                                 @break
                                         @endswitch
                                     @endforeach
