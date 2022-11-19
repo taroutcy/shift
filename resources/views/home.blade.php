@@ -2,13 +2,13 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
 	<div class="row justify-content-center text-center">
 		<div class="
 		@can('isEditor')
-		col-md-7
+		col-md-5
 		@else
-		col-md-4
+		col-md-3
 		@endcan
 		">
 			<p>
