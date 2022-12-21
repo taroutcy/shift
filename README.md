@@ -10,7 +10,7 @@
 スタッフはシフトの提出と確認のみを行うことができます．  
 
 ## デモ
-<a href="https://salty-ravine-24071.herokuapp.com/">こちら</a>で試すことができます．
+<a href="https://desolate-sea-27640.herokuapp.com/">こちら</a>で試すことができます．
 
 管理者  
 個人番号: 0000000000  
