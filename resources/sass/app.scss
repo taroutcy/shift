@@ -6,3 +6,9 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.btn-back {
+  @extend .btn;
+  @extend .btn-sm;
+  @extend .btn-light;
+}

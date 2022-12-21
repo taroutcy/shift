@@ -1,7 +1,8 @@
+@import "bootstrap/scss/functions"; 
+@import "bootstrap/scss/variables";
+
+@import "bootstrap";
+
 .row::before, .row::after {
   display: none;
-}
-
-.workStatues {
-    /*display: block;*/
 }

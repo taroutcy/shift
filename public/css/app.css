@@ -2632,7 +2632,8 @@ textarea.form-control.is-invalid {
   }
 }
 
-.btn {
+.btn,
+.btn-back {
   display: inline-block;
   font-weight: 400;
   color: #212529;
@@ -2651,33 +2652,42 @@ textarea.form-control.is-invalid {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn {
+  .btn,
+  .btn-back {
     transition: none;
   }
 }
 
-.btn:hover {
+.btn:hover,
+.btn-back:hover {
   color: #212529;
   text-decoration: none;
 }
 
 .btn:focus,
-.btn.focus {
+.btn-back:focus,
+.btn.focus,
+.focus.btn-back {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
 .btn.disabled,
-.btn:disabled {
+.disabled.btn-back,
+.btn:disabled,
+.btn-back:disabled {
   opacity: 0.65;
 }
 
-.btn:not(:disabled):not(.disabled) {
+.btn:not(:disabled):not(.disabled),
+.btn-back:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
 
 a.btn.disabled,
-fieldset:disabled a.btn {
+a.disabled.btn-back,
+fieldset:disabled a.btn,
+fieldset:disabled a.btn-back {
   pointer-events: none;
 }
 
@@ -2927,20 +2937,24 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(231, 82, 78, 0.5);
 }
 
-.btn-light {
+.btn-light,
+.btn-back {
   color: #212529;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
 
-.btn-light:hover {
+.btn-light:hover,
+.btn-back:hover {
   color: #212529;
   background-color: #e2e6ea;
   border-color: #dae0e5;
 }
 
 .btn-light:focus,
-.btn-light.focus {
+.btn-back:focus,
+.btn-light.focus,
+.focus.btn-back {
   color: #212529;
   background-color: #e2e6ea;
   border-color: #dae0e5;
@@ -2948,23 +2962,31 @@ fieldset:disabled a.btn {
 }
 
 .btn-light.disabled,
-.btn-light:disabled {
+.disabled.btn-back,
+.btn-light:disabled,
+.btn-back:disabled {
   color: #212529;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
 
 .btn-light:not(:disabled):not(.disabled):active,
+.btn-back:not(:disabled):not(.disabled):active,
 .btn-light:not(:disabled):not(.disabled).active,
-.show > .btn-light.dropdown-toggle {
+.btn-back:not(:disabled):not(.disabled).active,
+.show > .btn-light.dropdown-toggle,
+.show > .dropdown-toggle.btn-back {
   color: #212529;
   background-color: #dae0e5;
   border-color: #d3d9df;
 }
 
 .btn-light:not(:disabled):not(.disabled):active:focus,
+.btn-back:not(:disabled):not(.disabled):active:focus,
 .btn-light:not(:disabled):not(.disabled).active:focus,
-.show > .btn-light.dropdown-toggle:focus {
+.btn-back:not(:disabled):not(.disabled).active:focus,
+.show > .btn-light.dropdown-toggle:focus,
+.show > .dropdown-toggle.btn-back:focus {
   box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
 }
 
@@ -3320,7 +3342,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-lg,
-.btn-group-lg > .btn {
+.btn-group-lg > .btn,
+.btn-group-lg > .btn-back {
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
@@ -3328,7 +3351,9 @@ fieldset:disabled a.btn {
 }
 
 .btn-sm,
-.btn-group-sm > .btn {
+.btn-back,
+.btn-group-sm > .btn,
+.btn-group-sm > .btn-back {
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
   line-height: 1.5;
@@ -3659,22 +3684,32 @@ input[type=button].btn-block {
 }
 
 .btn-group > .btn,
-.btn-group-vertical > .btn {
+.btn-group > .btn-back,
+.btn-group-vertical > .btn,
+.btn-group-vertical > .btn-back {
   position: relative;
   flex: 1 1 auto;
 }
 
 .btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover {
+.btn-group > .btn-back:hover,
+.btn-group-vertical > .btn:hover,
+.btn-group-vertical > .btn-back:hover {
   z-index: 1;
 }
 
 .btn-group > .btn:focus,
+.btn-group > .btn-back:focus,
 .btn-group > .btn:active,
+.btn-group > .btn-back:active,
 .btn-group > .btn.active,
+.btn-group > .active.btn-back,
 .btn-group-vertical > .btn:focus,
+.btn-group-vertical > .btn-back:focus,
 .btn-group-vertical > .btn:active,
-.btn-group-vertical > .btn.active {
+.btn-group-vertical > .btn-back:active,
+.btn-group-vertical > .btn.active,
+.btn-group-vertical > .active.btn-back {
   z-index: 1;
 }
 
@@ -3689,18 +3724,23 @@ input[type=button].btn-block {
 }
 
 .btn-group > .btn:not(:first-child),
+.btn-group > .btn-back:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
 
 .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn {
+.btn-group > .btn-back:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn,
+.btn-group > .btn-group:not(:last-child) > .btn-back {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .btn-group > .btn:not(:first-child),
-.btn-group > .btn-group:not(:first-child) > .btn {
+.btn-group > .btn-back:not(:first-child),
+.btn-group > .btn-group:not(:first-child) > .btn,
+.btn-group > .btn-group:not(:first-child) > .btn-back {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -3721,13 +3761,15 @@ input[type=button].btn-block {
 }
 
 .btn-sm + .dropdown-toggle-split,
+.btn-back + .dropdown-toggle-split,
 .btn-group-sm > .btn + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
 .btn-lg + .dropdown-toggle-split,
-.btn-group-lg > .btn + .dropdown-toggle-split {
+.btn-group-lg > .btn + .dropdown-toggle-split,
+.btn-group-lg > .btn-back + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3739,34 +3781,44 @@ input[type=button].btn-block {
 }
 
 .btn-group-vertical > .btn,
+.btn-group-vertical > .btn-back,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
 
 .btn-group-vertical > .btn:not(:first-child),
+.btn-group-vertical > .btn-back:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: -1px;
 }
 
 .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group-vertical > .btn-group:not(:last-child) > .btn {
+.btn-group-vertical > .btn-back:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn-group:not(:last-child) > .btn,
+.btn-group-vertical > .btn-group:not(:last-child) > .btn-back {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 .btn-group-vertical > .btn:not(:first-child),
-.btn-group-vertical > .btn-group:not(:first-child) > .btn {
+.btn-group-vertical > .btn-back:not(:first-child),
+.btn-group-vertical > .btn-group:not(:first-child) > .btn,
+.btn-group-vertical > .btn-group:not(:first-child) > .btn-back {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
 .btn-group-toggle > .btn,
-.btn-group-toggle > .btn-group > .btn {
+.btn-group-toggle > .btn-back,
+.btn-group-toggle > .btn-group > .btn,
+.btn-group-toggle > .btn-group > .btn-back {
   margin-bottom: 0;
 }
 
 .btn-group-toggle > .btn input[type=radio],
+.btn-group-toggle > .btn-back input[type=radio],
 .btn-group-toggle > .btn input[type=checkbox],
+.btn-group-toggle > .btn-back input[type=checkbox],
 .btn-group-toggle > .btn-group > .btn input[type=radio],
 .btn-group-toggle > .btn-group > .btn input[type=checkbox] {
   position: absolute;
@@ -3862,24 +3914,38 @@ input[type=button].btn-block {
 }
 
 .input-group-prepend .btn,
-.input-group-append .btn {
+.input-group-prepend .btn-back,
+.input-group-append .btn,
+.input-group-append .btn-back {
   position: relative;
   z-index: 2;
 }
 
 .input-group-prepend .btn:focus,
-.input-group-append .btn:focus {
+.input-group-prepend .btn-back:focus,
+.input-group-append .btn:focus,
+.input-group-append .btn-back:focus {
   z-index: 3;
 }
 
 .input-group-prepend .btn + .btn,
+.input-group-prepend .btn-back + .btn,
+.input-group-prepend .btn + .btn-back,
+.input-group-prepend .btn-back + .btn-back,
 .input-group-prepend .btn + .input-group-text,
+.input-group-prepend .btn-back + .input-group-text,
 .input-group-prepend .input-group-text + .input-group-text,
 .input-group-prepend .input-group-text + .btn,
+.input-group-prepend .input-group-text + .btn-back,
 .input-group-append .btn + .btn,
+.input-group-append .btn-back + .btn,
+.input-group-append .btn + .btn-back,
+.input-group-append .btn-back + .btn-back,
 .input-group-append .btn + .input-group-text,
+.input-group-append .btn-back + .input-group-text,
 .input-group-append .input-group-text + .input-group-text,
-.input-group-append .input-group-text + .btn {
+.input-group-append .input-group-text + .btn,
+.input-group-append .input-group-text + .btn-back {
   margin-left: -1px;
 }
 
@@ -3922,7 +3988,9 @@ input[type=button].btn-block {
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
-.input-group-lg > .input-group-append > .btn {
+.input-group-lg > .input-group-prepend > .btn-back,
+.input-group-lg > .input-group-append > .btn,
+.input-group-lg > .input-group-append > .btn-back {
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
@@ -3939,7 +4007,9 @@ input[type=button].btn-block {
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
-.input-group-sm > .input-group-append > .btn {
+.input-group-sm > .input-group-prepend > .btn-back,
+.input-group-sm > .input-group-append > .btn,
+.input-group-sm > .input-group-append > .btn-back {
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
   line-height: 1.5;
@@ -3952,22 +4022,29 @@ input[type=button].btn-block {
 }
 
 .input-group > .input-group-prepend > .btn,
+.input-group > .input-group-prepend > .btn-back,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group:not(.has-validation) > .input-group-append:not(:last-child) > .btn,
+.input-group:not(.has-validation) > .input-group-append:not(:last-child) > .btn-back,
 .input-group:not(.has-validation) > .input-group-append:not(:last-child) > .input-group-text,
 .input-group.has-validation > .input-group-append:nth-last-child(n+3) > .btn,
+.input-group.has-validation > .input-group-append:nth-last-child(n+3) > .btn-back,
 .input-group.has-validation > .input-group-append:nth-last-child(n+3) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+.input-group > .input-group-append:last-child > .btn-back:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .input-group > .input-group-append > .btn,
+.input-group > .input-group-append > .btn-back,
 .input-group > .input-group-append > .input-group-text,
 .input-group > .input-group-prepend:not(:first-child) > .btn,
+.input-group > .input-group-prepend:not(:first-child) > .btn-back,
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+.input-group > .input-group-prepend:first-child > .btn-back:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -5392,7 +5469,8 @@ a.badge:focus {
   display: none;
 }
 
-.btn .badge {
+.btn .badge,
+.btn-back .badge {
   position: relative;
   top: -1px;
 }
@@ -10846,7 +10924,7 @@ a.text-dark:focus {
     box-shadow: none !important;
   }
 
-  a:not(.btn) {
+  a:not(.btn):not(.btn-back) {
     text-decoration: underline;
   }
 
