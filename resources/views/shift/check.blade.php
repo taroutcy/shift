@@ -8,7 +8,13 @@
                 <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                     &#9666; home
                 </button>
-                <h2>シフト確認</h2>
+                <div style="display:flex; align-items:flex-end;">
+                    <h2>シフト確認</h2>
+                    <div class="ml-5 h4">
+                        <font class="text-primary mr-2">確定</font>
+                        <font class="text-danger">未確定</font>
+                    </div>
+                </div>
             </p>
             <div class="input-group">
                 <div class="mr-2">
@@ -51,7 +57,13 @@
                                 </td>
                                 @foreach($dates as $date)
                                     @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                                    <td class="text-danger h5">
+                                    <td class="h5
+                                    @if($schedule->scheduleStatus->name == '提出')
+                                        text-danger
+                                    @elseif($schedule->scheduleStatus->name == '決定')
+                                        text-primary
+                                    @endif
+                                    ">
                                         @if($schedule->workStatus->name == '出勤')
                                             {{ $schedule->shift->name }}
                                         @elseif($schedule->workStatus->name == '有給')
