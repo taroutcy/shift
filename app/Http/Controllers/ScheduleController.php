@@ -19,7 +19,7 @@ class ScheduleController extends Controller
 
         $carbon = new Carbon();
         $carbon->locale('ja_JP');
-
+        
         if ($year) {
             $carbon->setYear($year);
         }
@@ -35,8 +35,10 @@ class ScheduleController extends Controller
 
         $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek();
         $endDayOfCalendar = $lastOfMonth->copy()->endOfWeek();
-
+        
         $dates = [];
+        
+        $schedules = $schedule->where('user_id', Auth::user()->id)->whereBetween('date', [$firstDayOfCalendar->format('Y-m-d'), $endDayOfCalendar->format('Y-m-d')])->get();
         
         while ($firstDayOfCalendar < $endDayOfCalendar) {
             $dates[] = $firstDayOfCalendar->copy();
@@ -44,9 +46,8 @@ class ScheduleController extends Controller
         }
         
         $shifts = Shift::all();
-        $schedules = $schedule->where('user_id', Auth::user()->id)->get();
         $workStatuses = $workStatus->get();
-
+        
         return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'workStatuses'));
     }
     
