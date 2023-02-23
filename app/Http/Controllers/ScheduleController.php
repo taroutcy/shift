@@ -154,7 +154,6 @@ class ScheduleController extends Controller
     
     public function allConfirmShift($year,$month, Request $request)
     {
-        
         if($request->has('confirm')) {
             Schedule::where('user_id', 1)
             ->where('date',  '2023-02-01')

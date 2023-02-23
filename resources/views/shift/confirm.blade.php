@@ -55,29 +55,37 @@
                     <tbody class="table-borderless">
                             @foreach($users as $user)
                             <tr>
-                                <td class="h5">
+                                <td class="align-middle h5">
                                     <font class="h6">
                                         {{ $user->last_name }}
                                     </font>
                                 </td>
                                 @foreach($dates as $date)
                                     @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                                    <td class="h5
-                                    @if($schedule->scheduleStatus->name == '提出')
-                                        text-danger
-                                    @elseif($schedule->scheduleStatus->name == '決定')
-                                        text-primary
-                                    @endif
-                                    ">
-                                        @if($schedule->workStatus->name == '出勤')
-                                            {{ $schedule->shift->name }}
-                                        @elseif($schedule->workStatus->name == '有給')
-                                            有
-                                        @else
-                                            <font class="h6">
-                                                ×
-                                            </font>
+                                    <td class="flex justify-center align-middle" >
+                                        <div class="d-flex justify-content-center">
+                                        @if($schedule->scheduleStatus->name == '提出')
+                                            <font class="text-danger">
+                                        @elseif($schedule->scheduleStatus->name == '決定')
+                                            <button type="button" class="btn btn-outline-light text-primary">
                                         @endif
+                                        
+                                            @if($schedule->workStatus->name == '出勤')
+                                                {{ $schedule->shift->name }}
+                                            @elseif($schedule->workStatus->name == '有給')
+                                                有
+                                            @else
+                                                <font class="h6">
+                                                    ×
+                                                </font>
+                                            @endif
+                                            
+                                        @if($schedule->scheduleStatus->name == '提出')
+                                            </font>
+                                        @elseif($schedule->scheduleStatus->name == '決定')
+                                                </button>
+                                        @endif
+                                        </div>
                                     </td>
                                     @endforeach
                                     
