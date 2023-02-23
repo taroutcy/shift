@@ -67,7 +67,7 @@
                                         @if($schedule->scheduleStatus->name == '提出')
                                             <font class="text-danger">
                                         @elseif($schedule->scheduleStatus->name == '決定')
-                                            <button type="button" class="btn btn-outline-light text-primary">
+                                            <button type="button" class="btn btn-outline-light text-primary" style="border:none;">
                                         @endif
                                         
                                             @if($schedule->workStatus->name == '出勤')
