@@ -8,7 +8,18 @@
                 <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                     &#9666; home
                 </button>
-                <h2>シフト作成</h2>
+                <div style="display:flex; align-items:flex-end;">
+                    <h2>シフト作成</h2>
+                    <form method="POST" action="{{ route('shift.confirm.all', 
+                        ['year' => $firstDayOfMonth->copy()->year,
+                         'month' => $firstDayOfMonth->copy()->month]) }}">
+                        @csrf
+                        <div class="ml-4 h2 btn-group-toggle">
+                            <button type="submit" name='confirm' class="btn btn-outline-primary">確定</button>
+                            <button type="submit" name='reset' class="btn btn-outline-danger">リセット</button>
+                        </div>
+                    </form>
+                </div>
             </p>
             <div class="input-group">
                 <div class="mr-2">
@@ -51,7 +62,13 @@
                                 </td>
                                 @foreach($dates as $date)
                                     @foreach($schedules->where('user_id', $user->id)->where('date', $date->format('Y-m-d')) as $schedule)
-                                    <td class="text-danger h5">
+                                    <td class="h5
+                                    @if($schedule->scheduleStatus->name == '提出')
+                                        text-danger
+                                    @elseif($schedule->scheduleStatus->name == '決定')
+                                        text-primary
+                                    @endif
+                                    ">
                                         @if($schedule->workStatus->name == '出勤')
                                             {{ $schedule->shift->name }}
                                         @elseif($schedule->workStatus->name == '有給')

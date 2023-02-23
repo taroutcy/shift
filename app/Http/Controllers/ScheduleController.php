@@ -151,4 +151,26 @@ class ScheduleController extends Controller
         
         return view('shift.confirm', compact('dates', 'firstDayOfMonth', 'users', 'schedules'));
     }
+    
+    public function allConfirmShift($year,$month, Request $request)
+    {
+        
+        if($request->has('confirm')) {
+            Schedule::where('user_id', 1)
+            ->where('date',  '2023-02-01')
+            ->update(['schedule_status_id' => 2]);
+        } 
+        if ($request->has('reset')) {
+            Schedule::where('user_id', 1)
+            ->where('date', '2023-02-01')
+            ->update(['schedule_status_id' => 1]);
+        }
+        
+        return redirect()->route('shift.confirm.get', ['year' => $year, 'month' => $month]);
+    }
+    
+    public function changeConfirmShift($id, $date)
+    {
+        return redirect()->route('shift.confirm.get');
+    }
 }
