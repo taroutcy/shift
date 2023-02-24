@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('check/{year?}/{month?}','ScheduleController@checkShift')->name('shift.check');
         Route::get('confirm/{year?}/{month?}','ScheduleController@getConfirmShift')->name('shift.confirm.get');
         Route::post('confirm/{year?}/{month?}','ScheduleController@allConfirmShift')->name('shift.confirm.all');
-        Route::post('confirm/{id?}/{date?}','ScheduleController@changeConfirmShift')->name('shift.confirm.change');
+        Route::post('confirm/{id?}/{year?}/{month?}/{date?}','ScheduleController@changeConfirmShift')->name('shift.confirm.change');
     });
  });
  

@@ -146,30 +146,87 @@ class ScheduleController extends Controller
             $dayOfMonth->addDay();
         }
         
+        $shifts = Shift::all();
         $users = $user->where('active', true)->orderBy('department_id')->orderBy('role_id')->get();
         $schedules = $schedule->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
         
-        return view('shift.confirm', compact('dates', 'firstDayOfMonth', 'users', 'schedules'));
+        return view('shift.confirm', compact('dates', 'firstDayOfMonth', 'users', 'schedules', 'shifts'));
     }
     
     public function allConfirmShift($year,$month, Request $request)
     {
         if($request->has('confirm')) {
-            Schedule::where('user_id', 1)
-            ->where('date',  '2023-02-01')
+            
+            Schedule::whereYear('date', '=', $year)
+            ->whereMonth('date', '=', $month)
             ->update(['schedule_status_id' => 2]);
+            
+            $carbon = new Carbon();
+            $carbon->locale('ja_JP');
+            
+            if ($year) {
+                $carbon->setYear($year);
+            }
+            if ($month) {
+                $carbon->setMonth($month);
+            }
+            
+            $carbon->setDay(1);
+            $carbon->setTime(0, 0);
+    
+            $firstDayOfMonth = $carbon->copy()->firstOfMonth();
+            $lastOfMonth = $carbon->copy()->lastOfMonth();
+            
+            foreach(User::all() as $user) {
+                $date = $firstDayOfMonth->copy();
+                
+                while($date <= $lastOfMonth) {
+                    if(!Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))->exists()) {
+                        Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
+                        ->create(
+                        ['user_id' => $user->id,
+                         'shift_id' => null, 
+                         'schedule_status_id' => 2, 
+                         'work_status_id' => 2,
+                         'date' => $date->format('Y-m-d'),
+                        ]);
+                    }
+                    $date->addDay(1);
+                }
+                
+            }
+            
         } 
         if ($request->has('reset')) {
-            Schedule::where('user_id', 1)
-            ->where('date', '2023-02-01')
+            Schedule::whereYear('date', '=', $year)
+            ->whereMonth('date', '=', $month)
             ->update(['schedule_status_id' => 1]);
         }
         
         return redirect()->route('shift.confirm.get', ['year' => $year, 'month' => $month]);
     }
     
-    public function changeConfirmShift($id, $date)
+    public function changeConfirmShift($id, $year, $month, $date, Request $request)
     {
-        return redirect()->route('shift.confirm.get');
+        
+        $data = $request->post();
+        
+        if(isset($data['shift_id'])) {
+            Schedule::updateOrCreate(
+            ['user_id' => $id, 'date' => $date], 
+            ['shift_id' => $data['shift_id'], 
+             'schedule_status_id' => 2, 
+             'work_status_id' => $data['work_status_id']],
+            );
+        } else {
+            Schedule::updateOrCreate(
+            ['user_id' => $id, 'date' => $date], 
+            ['shift_id' => null, 
+             'schedule_status_id' => 2, 
+             'work_status_id' => $data['work_status_id']],
+            );
+        }
+        
+        return redirect()->route('shift.confirm.get', ['year' => $year, 'month' => $month]);
     }
 }

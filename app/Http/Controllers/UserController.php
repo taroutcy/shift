@@ -36,6 +36,7 @@ class UserController extends Controller
         
         User::where('id', '=', $id)
         ->update([
+            'number' => $data['number'], 
             'last_name' => $data['last_name'],
             'first_name' => $data['first_name'],
             // 'password' => Hash::make($data['password']),

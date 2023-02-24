@@ -114,7 +114,7 @@
                                         </button>
                                     @endif
                                 
-                                <!--モーダル-->
+                                <!--モーダルウィンドウ s-->
                                 <div class="modal fade" id="modal{{ $date->format('Ymd') }}" role="dialog" aria-labelledby="label1" aria-hidden="true" data-backdrop="static">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -122,9 +122,6 @@
                                                 <h5 class="modal-title text-dark h4">
                                                     {{ $date->format('Y/n/j') }}
                                                 </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
                                             </div>
                                             <form method="POST" action="{{ route('shift.calendar.post', ['date' => $date->format('Y-m-d')]) }}" name="form{{ $date->format('Ymd') }}">
                                                 <div class="modal-body text-dark h6">
@@ -184,31 +181,12 @@
                                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onClick="document.form{{ $date->format('Ymd') }}.reset();">キャンセル</button>
                                                 </div>
                                                     
-                                                <script>
-                                                    function manageDispSelect(work_status_id, date) {
-                                                        let select = document.getElementById('shift' + date);
-                                                        
-                                                        if (work_status_id == '1') {
-                                                            select.disabled = false;
-                                                        } else {
-                                                            select.disabled = true;
-                                                        }
-                                                    }
-                                                    
-                                                    function inShiftSlect(id) {
-                                                        let select = document.getElementById('shift' + id);
-                                                        
-                                                        if (select.value) {
-                                                           return true;
-                                                        } else {
-                                                            return false;
-                                                        }
-                                                    }
-                                                </script>
+                                                <script src="{{ asset('js/func.js') }}"></script>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
+                                <!--モーダルウィンドウ end-->
                             </td>
                         @if($date->isSaturday())
                             </tr>
