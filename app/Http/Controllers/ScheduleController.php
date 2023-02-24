@@ -183,7 +183,7 @@ class ScheduleController extends Controller
                 while($date <= $lastOfMonth) {
                     if(!Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))->exists()) {
                         Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
-                        ->create(
+                        ->updateOrCreate(
                         ['user_id' => $user->id,
                          'shift_id' => null, 
                          'schedule_status_id' => 2, 
