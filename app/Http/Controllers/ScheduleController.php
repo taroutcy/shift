@@ -181,9 +181,9 @@ class ScheduleController extends Controller
                 while($date <= $lastOfMonth) {
                     Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
                     ->updateOrCreate(
-                    ['date' => $date->format('Y-m-d')],
                     ['user_id' => $user->id,
-                     'shift_id' => null, 
+                     'date' => $date->format('Y-m-d')],
+                    ['shift_id' => null, 
                      'schedule_status_id' => 2, 
                      'work_status_id' => 2,
                     ]);
@@ -195,8 +195,7 @@ class ScheduleController extends Controller
                 Schedule::where('user_id', $schedule->user_id)
                 ->where('date', $schedule->date)
                 ->update(
-                ['user_id' => $schedule->user_id,
-                 'shift_id' => $schedule->shift_id,
+                ['shift_id' => $schedule->shift_id,
                  'work_status_id' => $schedule->work_status_id,
                 ]);
             }
