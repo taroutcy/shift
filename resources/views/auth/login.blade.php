@@ -55,7 +55,7 @@
                         <p class="card-text">
                             <div class="col-md-4 offset-md-4">
                                 <button type="submit" class="btn btn-outline-primary">
-                                    go
+                                    Go !
                                 </button>
 
                                 <!--@if (Route::has('password.request'))-->
