@@ -65,33 +65,51 @@
 | date | 提出・完了されたシフトの日付 |
 </details>
 
-### 仕様
+## 仕様
 10桁の個人番号とパスワードを入力するとログインできます．
 
-<img width="450" src="https://user-images.githubusercontent.com/38804704/202212752-b19f5989-35b8-4ef8-baf0-ec71d9e79502.png">
+<img width="450" src="https://user-images.githubusercontent.com/38804704/221360809-d20f48b7-203f-4b98-a629-d139001d3339.png" title="login">
 
 ログイン後は編集権限の有無によって表示画面が変わります．(左:編集権限有, 右:編集権限無)
 <p style="align-items: center">
-<img width="450" src="https://user-images.githubusercontent.com/38804704/202088481-ef8068ee-f618-49e1-9d7c-5eae7bfc2f13.png">
+<img width="450" src="https://user-images.githubusercontent.com/38804704/202088481-ef8068ee-f618-49e1-9d7c-5eae7bfc2f13.png" title="home with edit">
 <img width="268" src="https://user-images.githubusercontent.com/38804704/202088658-4be18be2-f383-4366-bb74-db12839735d9.png">
 </p>
 編集権限があるユーザはシフトの提出・確認に加えて<b>シフトの作成とユーザの管理</b>を行うことができます．
 
-#### シフト提出
+### シフト提出
 シフトの提出は以下のカレンダー形式で行うことができます．日付の中をクリックするとモーダルが表示されシフトを選択することができます．
 <p style="align-items: center">
-<img width="460" src="https://user-images.githubusercontent.com/38804704/202591468-954e2e1a-a72e-433e-8218-68cc6d139584.png">
+<img width="460" src="https://user-images.githubusercontent.com/38804704/221360858-6060915a-e680-4884-9446-b4c8a9557437.png">
 <img width="539" src="https://user-images.githubusercontent.com/38804704/202591562-8ef51339-35fe-4a3e-978f-c069e554ad61.png">
 </p>
 
 出勤・欠勤・有給のいずれかを選択し，OKを押すとカレンダー一覧に提出したシフトが反映されます．
 <img width="400" src="https://user-images.githubusercontent.com/38804704/202110586-8f889419-e3d4-44f5-b29a-a5ded4c6ef32.png">
 
-#### シフトの確認
+### シフトの確認
 シフト提出されたは以下のように確認することができます．
-<img width="800" src="https://user-images.githubusercontent.com/38804704/202128945-8adaa3b5-234d-4468-a205-8d5284affb41.png">
+<img width="800" src="https://user-images.githubusercontent.com/38804704/221360915-17f5e9b5-65e9-4a86-a326-d027c593ef86.png">
 
-#### 従業員管理
+### シフト作成
+シフト作成は編集権限を持つユーザのみ行うことができます．
+ロックボタンでシフトをロック，解除ボタンで提出を許可することができます．
+シフトをロックすると全従業員のシフトを調整することができます．
+<img width="800" src="https://user-images.githubusercontent.com/38804704/221360970-4cdf6b47-7840-4af5-8c5f-cc23c96f2783.png">
+
+以下のように編集者は提出されたシフトを調整して登録することができます．
+<img width="800" src="https://user-images.githubusercontent.com/38804704/221362746-55151eea-ee67-4f3d-81e7-c602d0c94ed6.png">
+
+### 従業員管理
+従業員管理は編集権限を持つユーザが以下の画面で行うことができます．
+<img width="600" src="https://user-images.githubusercontent.com/38804704/221363619-643f0707-a581-4eac-8e17-c1ce68aeb023.png">
+
+ユーザをクリックすると編集画面へ飛び，氏名，契約状況，デパ(役割)を変更することができます．
+<img width="600" src="https://user-images.githubusercontent.com/38804704/221363690-25fc171d-8ca5-428a-afc0-081855d74e5c.png">
+
+以下が新規登録画面です．各項目を埋めることで新たなユーザを登録することができます．
+<img width="600" src="https://user-images.githubusercontent.com/38804704/221363723-d04b1bbe-40f8-4caa-ad19-83c90f675062.png">
+
 ## ToDo
 - [ ] ユーザの削除機能
 - [ ] ユーザのアクティブ状態の編集機能
