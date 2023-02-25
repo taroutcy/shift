@@ -157,10 +157,6 @@ class ScheduleController extends Controller
     {
         if($request->has('confirm')) {
             
-            Schedule::whereYear('date', '=', $year)
-            ->whereMonth('date', '=', $month)
-            ->update(['schedule_status_id' => 2]);
-            
             $carbon = new Carbon();
             $carbon->locale('ja_JP');
             
@@ -177,26 +173,36 @@ class ScheduleController extends Controller
             $firstDayOfMonth = $carbon->copy()->firstOfMonth();
             $lastOfMonth = $carbon->copy()->lastOfMonth();
             
+            $schedules_exit = Schedule::whereYear('date', $year)->whereMonth('date', $month)->get();
+            
+            
             foreach(User::all() as $user) {
                 $date = $firstDayOfMonth->copy();
-                
                 while($date <= $lastOfMonth) {
-                    if(!Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))->exists()) {
-                        Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
-                        ->updateOrCreate(
-                        ['user_id' => $user->id,
-                         'shift_id' => null, 
-                         'schedule_status_id' => 2, 
-                         'work_status_id' => 2,
-                         'date' => $date->format('Y-m-d'),
-                        ]);
-                    }
+                    Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
+                    ->updateOrCreate(
+                    ['date' => $date->format('Y-m-d')],
+                    ['user_id' => $user->id,
+                     'shift_id' => null, 
+                     'schedule_status_id' => 2, 
+                     'work_status_id' => 2,
+                    ]);
                     $date->addDay(1);
                 }
-                
+            }
+            
+            foreach($schedules_exit as $schedule) {
+                Schedule::where('user_id', $schedule->user_id)
+                ->where('date', $schedule->date)
+                ->update(
+                ['user_id' => $schedule->user_id,
+                 'shift_id' => $schedule->shift_id,
+                 'work_status_id' => $schedule->work_status_id,
+                ]);
             }
             
         } 
+        
         if ($request->has('reset')) {
             Schedule::whereYear('date', '=', $year)
             ->whereMonth('date', '=', $month)
