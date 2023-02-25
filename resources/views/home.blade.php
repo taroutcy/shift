@@ -12,7 +12,7 @@
 		@endcan
 		">
 			<p>
-				<h2>Home</h2>
+				<h1>Home</h1>
 			</p>
 			<div class="card bg-transparent">
 				<div class="card-body">

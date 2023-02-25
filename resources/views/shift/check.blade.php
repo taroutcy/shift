@@ -10,9 +10,10 @@
                 </button>
                 <div style="display:flex; align-items:flex-end;">
                     <h2>シフト確認</h2>
-                    <div class="ml-5 h4">
-                        <font class="text-primary mr-2">確定</font>
-                        <font class="text-danger">未確定</font>
+                    <div class="ml-5 h5">
+                        <font class="text-danger mr-1">可</font>
+                        <font class="text-secondary h4 mr-1">提出</font>
+                        <font class="text-primary">不可</font>
                     </div>
                 </div>
             </p>

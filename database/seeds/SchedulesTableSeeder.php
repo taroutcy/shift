@@ -13,6 +13,7 @@ class SchedulesTableSeeder extends Seeder
     {
         $months = range(1,12);
         $days = range(1,30);
+        $work_statuses = [1,3];
         
         // admin seeder 
         $count = 1;
@@ -22,18 +23,21 @@ class SchedulesTableSeeder extends Seeder
                     break;
                 } 
                 
-                DB::table('schedules') -> insert([
-                    'id' => $count,
-                    'user_id' => '1', 
-                    'shift_id' => rand(1,2), 
-                    'schedule_status_id' => '1', 
-                    'work_status_id' => rand(1,3), 
-                    'date' => '2023-'.str_pad($month, 2, 0, STR_PAD_LEFT).'-'.str_pad($day, 2, 0, STR_PAD_LEFT), 
-                    'created_at' => null,
-                    'updated_at' => null
-                ]);
+                if(rand(1,2) == 1) {
+                    DB::table('schedules') -> insert([
+                        'id' => $count,
+                        'user_id' => '1', 
+                        'shift_id' => rand(1,2), 
+                        'schedule_status_id' => '1', 
+                        'work_status_id' => $work_statuses[rand(0,1)], 
+                        'date' => '2023-'.str_pad($month, 2, 0, STR_PAD_LEFT).'-'.str_pad($day, 2, 0, STR_PAD_LEFT), 
+                        'created_at' => null,
+                        'updated_at' => null
+                    ]);
+                    $count++;
+                }
+                
 
-                $count++;
             }
         }
         

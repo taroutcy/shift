@@ -8,7 +8,14 @@
                 <button type='button' class='btn-back' onClick='location.href="{{ route('home') }}"'>
                     &#9666; home
                 </button>
-                <h2>シフト提出</h2>
+                <div style="display:flex; align-items:flex-end;">
+                    <h2>シフト提出</h2>
+                    <div class="ml-5 h5">
+                        <font class="text-danger mr-1">可</font>
+                        <font class="text-secondary h4 mr-1">提出</font>
+                        <font class="text-primary">不可</font>
+                    </div>
+                </div>
             </p>
             
             <div class="input-group">

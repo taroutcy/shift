@@ -13,10 +13,8 @@ use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $workStatus)
-    {
-        $weeks = ['日', '月', '火', '水', '木', '金', '土'];
-
+    public function makeCarbon($year, $month) {
+        
         $carbon = new Carbon();
         $carbon->locale('ja_JP');
         
@@ -29,6 +27,15 @@ class ScheduleController extends Controller
         
         $carbon->setDay(1);
         $carbon->setTime(0, 0);
+        
+        return $carbon;
+    }
+    
+    public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $workStatus)
+    {
+        $weeks = ['日', '月', '火', '水', '木', '金', '土'];
+
+        $carbon = $this->makeCarbon($year, $month);
 
         $firstDayOfMonth = $carbon->copy()->firstOfMonth();
         $lastOfMonth = $carbon->copy()->lastOfMonth();
@@ -63,12 +70,14 @@ class ScheduleController extends Controller
              'work_status_id' => $data['work_status_id']],
             );
         } else {
-            Schedule::updateOrCreate(
-            ['user_id' => Auth::user()->id, 'date' => $date], 
-            ['shift_id' => null, 
-             'schedule_status_id' => 1, 
-             'work_status_id' => $data['work_status_id']],
-            );
+            if($data['work_status_id'] != 2) {
+                Schedule::updateOrCreate(
+                ['user_id' => Auth::user()->id, 'date' => $date], 
+                ['shift_id' => null, 
+                 'schedule_status_id' => 1, 
+                 'work_status_id' => $data['work_status_id']],
+                );
+            }
         }
         
         return redirect()->route('shift.calendar.edit');
@@ -78,19 +87,7 @@ class ScheduleController extends Controller
     {
         $weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
-        $carbon = new Carbon();
-        $carbon->locale('ja_JP');
-        
-        if ($year) {
-            $carbon->setYear($year);
-        }
-        if ($month) {
-            $carbon->setMonth($month);
-        }
-        
-        $carbon->setDay(1);
-        $carbon->setTime(0, 0);
-        // $carbon->addMonth(2);
+        $carbon = $this->makeCarbon($year, $month);
 
         $firstDayOfMonth = $carbon->copy()->firstOfMonth();
         $lastOfMonth = $carbon->copy()->lastOfMonth();
@@ -108,7 +105,9 @@ class ScheduleController extends Controller
         }
         
         $users = $user->where('active', true)->orderBy('department_id')->orderBy('role_id')->get();
-        $schedules = $schedule->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
+        $schedules = $schedule
+                     ->whereYear('date', $firstDayOfMonth->copy()->year)
+                     ->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
         
         return view('shift.check', compact('dates', 'firstDayOfMonth', 'users', 'schedules'));
     }
@@ -117,25 +116,10 @@ class ScheduleController extends Controller
     {
         $weeks = ['日', '月', '火', '水', '木', '金', '土'];
 
-        $carbon = new Carbon();
-        $carbon->locale('ja_JP');
-        
-        if ($year) {
-            $carbon->setYear($year);
-        }
-        if ($month) {
-            $carbon->setMonth($month);
-        }
-        
-        $carbon->setDay(1);
-        $carbon->setTime(0, 0);
-        // $carbon->addMonth(2);
+        $carbon = $this->makeCarbon($year, $month);
 
         $firstDayOfMonth = $carbon->copy()->firstOfMonth();
         $lastOfMonth = $carbon->copy()->lastOfMonth();
-
-        // $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek();
-        // $endDayOfCalendar = $lastOfMonth->copy()->endOfWeek();
 
         $dates = [];
         
@@ -155,30 +139,27 @@ class ScheduleController extends Controller
     
     public function allConfirmShift($year,$month, Request $request)
     {
+        // シフトをロックするボタンが押された場合
         if($request->has('confirm')) {
             
-            $carbon = new Carbon();
-            $carbon->locale('ja_JP');
+            // 日時取得
+            $carbon = $this->makeCarbon($year, $month);
             
-            if ($year) {
-                $carbon->setYear($year);
-            }
-            if ($month) {
-                $carbon->setMonth($month);
-            }
-            
-            $carbon->setDay(1);
-            $carbon->setTime(0, 0);
-    
             $firstDayOfMonth = $carbon->copy()->firstOfMonth();
             $lastOfMonth = $carbon->copy()->lastOfMonth();
             
+            // 欠勤以外のカラムを保存
             $schedules_exit = Schedule::whereYear('date', $year)->whereMonth('date', $month)->get();
             
-            
+            // 各ユーザごとに回す
             foreach(User::all() as $user) {
+                
+                // 月の最初の日
                 $date = $firstDayOfMonth->copy();
+                
+                // 月の初日から最終日まで回す
                 while($date <= $lastOfMonth) {
+                    // この月のカラムを全て"欠勤+提出済み"にする
                     Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
                     ->updateOrCreate(
                     ['user_id' => $user->id,
@@ -191,6 +172,7 @@ class ScheduleController extends Controller
                 }
             }
             
+            // 保存した欠勤以外のデータを上書きする
             foreach($schedules_exit as $schedule) {
                 Schedule::where('user_id', $schedule->user_id)
                 ->where('date', $schedule->date)
@@ -202,7 +184,15 @@ class ScheduleController extends Controller
             
         } 
         
+        // 解除ボタンが押された場合
         if ($request->has('reset')) {
+            // 欠勤のカラムを削除
+            Schedule::whereYear('date', '=', $year)
+            ->whereMonth('date', '=', $month)
+            ->where('work_status_id', 2)
+            ->delete();
+            
+            // $year年$month月のデータを変更可能にする
             Schedule::whereYear('date', '=', $year)
             ->whereMonth('date', '=', $month)
             ->update(['schedule_status_id' => 1]);
@@ -216,6 +206,7 @@ class ScheduleController extends Controller
         
         $data = $request->post();
         
+        // シフトが登録される場合
         if(isset($data['shift_id'])) {
             Schedule::updateOrCreate(
             ['user_id' => $id, 'date' => $date], 
@@ -224,6 +215,8 @@ class ScheduleController extends Controller
              'work_status_id' => $data['work_status_id']],
             );
         } else {
+            // 欠勤は登録しない
+            if($data['work_status_id'] != 2)
             Schedule::updateOrCreate(
             ['user_id' => $id, 'date' => $date], 
             ['shift_id' => null, 

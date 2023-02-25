@@ -15,11 +15,14 @@
                          'month' => $firstDayOfMonth->copy()->month]) }}">
                         @csrf
                         <div class="ml-4 h2 btn-group-toggle">
-                            <button type="submit" name='confirm' class="btn btn-outline-primary" style="border:none;">ロック</button>
-                            <button type="submit" name='reset' class="btn btn-outline-danger" style="border:none;">解除</button>
-                            <button type="button" class="btn btn-outline-info" style="border:none;" data-bs-toggle="tooltip" data-bs-placement="top" data-html="true" title="ロック: 提出を停止. 解除: 提出を許可" disabled>
-                              info
+                            <div class="btn-group">
+                                <button type="submit" name='confirm' class="btn btn-outline-primary">ロック</button>
+                                <button type="submit" name='reset' class="btn btn-outline-danger">解除</button>
+                            </div>
+                            <button type="button" class="btn btn-outline-dark btn-lg" style="border:none;" data-bs-toggle="tooltip" data-bs-placement="top" data-html="true" title="ロック: 提出を停止. 解除: 提出を許可" disabled>
+                                <span class="bi bi-info-circle"></span>
                             </button>
+                            
                         </div>
                     </form>
                     
@@ -72,7 +75,7 @@
                                         @if($schedule->scheduleStatus->name == '提出')
                                             <font class="text-danger">
                                         @elseif($schedule->scheduleStatus->name == '決定')
-                                            <button type="button" class="btn btn-outline-light text-primary" style="border:none;" data-toggle="modal" data-target="#modal{{ $user->id }}-{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedule->work_status_id ?? 0 }}, {{ $user->id }}{{ $date->format('Ymd') }});">
+                                            <button type="button" class="btn btn-outline-light text-primary" style="border:none; outline:none;" data-toggle="modal" data-target="#modal{{ $user->id }}-{{ $date->format('Ymd') }}" onClick="manageDispSelect({{ $schedule->work_status_id ?? 0 }}, {{ $user->id }}{{ $date->format('Ymd') }});">
                                         @endif
                                         
                                             @if($schedule->workStatus->name == '出勤')
@@ -102,7 +105,7 @@
                                                             form{{ $user->id }}-{{ $date->format('Ymd') }}
                                                         </h4>
                                                     </div>
-                                                    <form method="POST" action="{{ route('shift.confirm.change', ['id' => $user->id, 'year' => $firstDayOfMonth->copy()->year, 'month' => $firstDayOfMonth->copy()->month, 'date' => $date->format('Y-m-d')]) }}" name="form{{ $user->id }}-{{ $date->format('Ymd') }}">
+                                                    <form method="POST" action="{{ route('shift.confirm.change', ['id' => $user->id, 'year' => $firstDayOfMonth->copy()->year, 'month' => $firstDayOfMonth->copy()->month, 'date' => $date->format('Y-m-d')]) }}" name="form{{ $user->id, $date->format('Ymd') }}">
                                                         @csrf
                                                         <div class="modal-body text-dark h6">
                                                             <p>
@@ -131,7 +134,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-outline-primary">OK</button>
-                                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onClick="document.form{{ $user->id }}-{{ $date->format('Ymd') }}.reset();">キャンセル</button>
+                                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onClick="document.form{{ $user->id, $date->format('Ymd') }}.reset();">キャンセル</button>
                                                         </div>
                                                             
                                                         <script src="{{ asset('js/func.js') }}"></script>

@@ -6,9 +6,9 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css");
 
 .btn-back {
   @extend .btn;
-  @extend .btn-sm;
   @extend .btn-light;
 }
