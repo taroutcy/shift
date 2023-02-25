@@ -148,7 +148,7 @@ class ScheduleController extends Controller
         
         $shifts = Shift::all();
         $users = $user->where('active', true)->orderBy('department_id')->orderBy('role_id')->get();
-        $schedules = $schedule->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
+        $schedules = $schedule->whereYear('date', $firstDayOfMonth->copy()->year)->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
         
         return view('shift.confirm', compact('dates', 'firstDayOfMonth', 'users', 'schedules', 'shifts'));
     }
