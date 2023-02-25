@@ -99,11 +99,11 @@
                                         <div class="modal fade" id="modal{{ $user->id }}-{{ $date->format('Ymd') }}" role="dialog" aria-hidden="true" data-backdrop="static">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header align-text-center">
-                                                        <h4 class="modal-title text-dark">
-                                                            {{ $date->format('Y/n/j') }}
-                                                            form{{ $user->id }}-{{ $date->format('Ymd') }}
-                                                        </h4>
+                                                    <div class="modal-header align-text-center text-dark">
+                                                        <h5 class="modal-title">
+                                                            {{ $date->format('Y/n/j') }} : 
+                                                            {{ $user->last_name }} {{ $user->first_name }}
+                                                        </h5>
                                                     </div>
                                                     <form method="POST" action="{{ route('shift.confirm.change', ['id' => $user->id, 'year' => $firstDayOfMonth->copy()->year, 'month' => $firstDayOfMonth->copy()->month, 'date' => $date->format('Y-m-d')]) }}" name="form{{ $user->id, $date->format('Ymd') }}">
                                                         @csrf
