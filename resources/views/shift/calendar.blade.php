@@ -39,7 +39,7 @@
             </div>
             <table class="table text-center">
                 <thead>
-                    <tr class="h5">
+                    <tr class="h6">
                         @foreach($weeks as $i => $week)
                             <th @if ($i==\Carbon\Carbon::SUNDAY) 
                                     class="text-danger"

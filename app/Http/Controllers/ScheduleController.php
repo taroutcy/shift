@@ -13,95 +13,127 @@ use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function makeCarbon($year, $month) {
+    
+    public function __construct() {
+        $this->weeks = ['日', '月', '火', '水', '木', '金', '土'];
+    }
+    
+    public function makeFirstAndLastDay($year, $month) {
         
-        $carbon = new Carbon();
-        $carbon->locale('ja_JP');
+        $carbon = new Carbon();     // インスタインスを生成
+        $carbon->locale('ja_JP');   // 場所を日本に設定
         
-        if ($year) {
-            $carbon->setYear($year);
+        // 年と月が指定されている場合
+        if ($year && $month) {
+            $carbon->setYear($year);    // 年を設定
+            $carbon->setMonth($month);  // 月を設定
         }
-        if ($month) {
-            $carbon->setMonth($month);
+        
+        $carbon->setDay(1);     // 〇月1日に設定
+        $carbon->setTime(0, 0); // 0時0分に設定
+        
+        $firstDayOfMonth = $carbon->copy()->firstOfMonth(); // 月の初日の月日を算出
+        $lastDayOfMonth = $carbon->copy()->lastOfMonth();   // 月の最終日の月日を算出
+        
+        return array($firstDayOfMonth, $lastDayOfMonth);
+    }
+    
+    public function makeDates($firstDay, $lastDay) {
+        $dates = [];
+        
+        while ($firstDay < $lastDay) {
+            $dates[] = $firstDay->copy();
+            $firstDay->addDay();
         }
         
-        $carbon->setDay(1);
-        $carbon->setTime(0, 0);
-        
-        return $carbon;
+        return $dates;
     }
     
     public function getShift(int $year = null, int $month = null, Schedule $schedule, WorkStatus $workStatus)
     {
-        $weeks = ['日', '月', '火', '水', '木', '金', '土'];
+        $weeks = $this->weeks;  // 曜日名を取得
+        
+        // $month月の初日と最終日を取得
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
 
-        $carbon = $this->makeCarbon($year, $month);
-
-        $firstDayOfMonth = $carbon->copy()->firstOfMonth();
-        $lastOfMonth = $carbon->copy()->lastOfMonth();
-
-        $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek();
-        $endDayOfCalendar = $lastOfMonth->copy()->endOfWeek();
+        // $month月におけるカレンダーの初日と最終日を取得
+        $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek(); 
+        $lastDayOfCalendar = $lastDayOfMonth->copy()->endOfWeek();
         
-        $dates = [];
+        // カレンダー内の日付を全て取得
+        $dates = $this->makeDates($firstDayOfCalendar->copy(), $lastDayOfCalendar->copy());
         
-        $schedules = $schedule->where('user_id', Auth::user()->id)->whereBetween('date', [$firstDayOfCalendar->format('Y-m-d'), $endDayOfCalendar->format('Y-m-d')])->get();
+        // ログインしたユーザのカレンダー内のシフトを全て取得
+        $schedules = $schedule->where('user_id', Auth::user()->id)
+        ->whereBetween('date', [$firstDayOfCalendar->copy()->format('Y-m-d'), $lastDayOfCalendar->copy()->format('Y-m-d')])->get();
         
-        while ($firstDayOfCalendar < $endDayOfCalendar) {
-            $dates[] = $firstDayOfCalendar->copy();
-            $firstDayOfCalendar->addDay();
-        }
-        
-        $shifts = Shift::all();
-        $workStatuses = $workStatus->get();
+        // 登録できるシフトと提出可能な出勤条件を取得
+        $shifts = Shift::all(); 
+        $workStatuses = WorkStatus::all();
         
         return view('shift.calendar', compact('weeks', 'dates', 'firstDayOfMonth', 'shifts', 'schedules', 'workStatuses'));
     }
     
     public function postShift($date, Request $request)
     {
-        $data = $request->post();
+        $data = $request->post();       // postされたデータを取得
+        $user_id = Auth::user()->id;    // ログインユーザのidを取得
         
-        if(isset($data['shift_id'])) {
-            Schedule::updateOrCreate(
-            ['user_id' => Auth::user()->id, 'date' => $date], 
-            ['shift_id' => $data['shift_id'], 
-             'schedule_status_id' => 1, 
-             'work_status_id' => $data['work_status_id']],
-            );
-        } else {
-            if($data['work_status_id'] == 2 && Schedule::where('date', $date)->where('user_id', Auth::user()->id)->exists()) {
-                Schedule::where('date', $date)
-                ->where('user_id', Auth::user()->id)
-                ->delete();
-            }
+        // 出勤 欠勤 有給でswitchする
+        switch($data['work_status_id']) {
+            // 出勤の場合
+            case 1:
+                // 既に$dateにおけるシフトが
+                // 登録されていた場合 -> udpate
+                // 登録されていなかった場合 -> create
+                Schedule::updateOrCreate(
+                ['user_id' => $user_id, 'date' => $date], 
+                ['shift_id' => $data['shift_id'], 
+                 'schedule_status_id' => 1, 
+                 'work_status_id' => 1]
+                );
+                break;
+            // 欠勤の場合
+            case 2:
+                // シフトが登録されていた場合は削除
+                if(Schedule::where('date', $date)->where('user_id', $user_id)->exists()) {
+                    Schedule::where('date', $date)
+                    ->where('user_id', $user_id)
+                    ->delete();
+                }
+                break;
+            // 有給の場合
+            case 3:
+                // 既に$dateにおけるシフトが
+                // 登録されていた場合 -> udpate
+                // 登録されていなかった場合 -> create
+                Schedule::updateOrCreate(
+                    ['user_id' => $user_id, 'date' => $date], 
+                    ['shift_id' => null, 
+                     'schedule_status_id' => 1, 
+                     'work_status_id' => 3]
+                );
+                break;
         }
+        
         
         return redirect()->route('shift.calendar.edit');
     }
     
     public function checkShift(int $year = null, int $month = null, User $user, Schedule $schedule)
     {
-        $weeks = ['日', '月', '火', '水', '木', '金', '土'];
+        $weeks = $this->weeks;  // 曜日名を取得
 
-        $carbon = $this->makeCarbon($year, $month);
+        // $month月の初日と最終日を取得
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
 
-        $firstDayOfMonth = $carbon->copy()->firstOfMonth();
-        $lastOfMonth = $carbon->copy()->lastOfMonth();
-
-        // $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek();
-        // $endDayOfCalendar = $lastOfMonth->copy()->endOfWeek();
-
-        $dates = [];
+        // カレンダー内の日付を全て取得
+        $dates = $this->makeDates($firstDayOfMonth->copy(), $lastDayOfMonth->copy());
         
-        $dayOfMonth = $firstDayOfMonth->copy();
-        
-        while ($dayOfMonth <= $lastOfMonth) {
-            $dates[] = $dayOfMonth->copy();
-            $dayOfMonth->addDay();
-        }
-        
+        // アクティブユーザをデパと契約状況で昇順に並び替えて取得
         $users = $user->where('active', true)->orderBy('department_id')->orderBy('role_id')->get();
+        
+        // $year年$month月の提出されたシフトを全て取得
         $schedules = $schedule
                      ->whereYear('date', $firstDayOfMonth->copy()->year)
                      ->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
@@ -111,25 +143,23 @@ class ScheduleController extends Controller
     
     public function getConfirmShift(int $year = null, int $month = null, User $user, Schedule $schedule)
     {
-        $weeks = ['日', '月', '火', '水', '木', '金', '土'];
+        $weeks = $this->weeks;  // 曜日名を取得
 
-        $carbon = $this->makeCarbon($year, $month);
-
-        $firstDayOfMonth = $carbon->copy()->firstOfMonth();
-        $lastOfMonth = $carbon->copy()->lastOfMonth();
-
-        $dates = [];
+        // $month月の初日と最終日を取得
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
         
-        $dayOfMonth = $firstDayOfMonth->copy();
+        // カレンダー内の日付を全て取得
+        $dates = $this->makeDates($firstDayOfMonth->copy(), $lastDayOfMonth->copy());
         
-        while ($dayOfMonth <= $lastOfMonth) {
-            $dates[] = $dayOfMonth->copy();
-            $dayOfMonth->addDay();
-        }
-        
-        $shifts = Shift::all();
+        // アクティブユーザをデパと契約状況で昇順に並び替えて取得
         $users = $user->where('active', true)->orderBy('department_id')->orderBy('role_id')->get();
-        $schedules = $schedule->whereYear('date', $firstDayOfMonth->copy()->year)->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
+        
+        // $year年$month月の提出されたシフトを全て取得
+        $schedules = $schedule
+                     ->whereYear('date', $firstDayOfMonth->copy()->year)
+                     ->whereMonth('date', $firstDayOfMonth->copy()->month)->get();
+
+        $shifts = Shift::all(); // 登録できるシフトの時間帯を取得
         
         return view('shift.confirm', compact('dates', 'firstDayOfMonth', 'users', 'schedules', 'shifts'));
     }
@@ -140,13 +170,7 @@ class ScheduleController extends Controller
         if($request->has('confirm')) {
             
             // 日時取得
-            $carbon = $this->makeCarbon($year, $month);
-            
-            $firstDayOfMonth = $carbon->copy()->firstOfMonth();
-            $lastOfMonth = $carbon->copy()->lastOfMonth();
-            
-            // 欠勤以外のカラムを保存
-            $schedules_exit = Schedule::whereYear('date', $year)->whereMonth('date', $month)->get();
+            list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
             
             // 各ユーザごとに回す
             foreach(User::all() as $user) {
@@ -155,30 +179,23 @@ class ScheduleController extends Controller
                 $date = $firstDayOfMonth->copy();
                 
                 // 月の初日から最終日まで回す
-                while($date <= $lastOfMonth) {
-                    // この月のカラムを全て"欠勤+提出済み"にする
-                    Schedule::where('user_id', $user->id)->where('date', $date->format('Y-m-d'))
-                    ->updateOrCreate(
-                    ['user_id' => $user->id,
-                     'date' => $date->format('Y-m-d')],
-                    ['shift_id' => null, 
-                     'schedule_status_id' => 2, 
-                     'work_status_id' => 2,
-                    ]);
+                while($date <= $lastDayOfMonth) {
+                    $date_fmt = $date->format('Y-m-d');
+                    if(Schedule::where('user_id', $user->id)->where('date', $date_fmt)->exists()){
+                        Schedule::where('user_id', $user->id)->where('date', $date_fmt)
+                        ->update(['schedule_status_id' => 2]);
+                    } else {
+                        Schedule::where('user_id', $user->id)->where('date', $date_fmt)
+                        ->create(
+                        ['user_id' => $user->id,
+                         'schedule_status_id' => 2,
+                         'work_status_id' => 2,
+                         'date' => $date_fmt
+                        ]);
+                    }
                     $date->addDay(1);
                 }
             }
-            
-            // 保存した欠勤以外のデータを上書きする
-            foreach($schedules_exit as $schedule) {
-                Schedule::where('user_id', $schedule->user_id)
-                ->where('date', $schedule->date)
-                ->update(
-                ['shift_id' => $schedule->shift_id,
-                 'work_status_id' => $schedule->work_status_id,
-                ]);
-            }
-            
         } 
         
         // 解除ボタンが押された場合
@@ -200,36 +217,34 @@ class ScheduleController extends Controller
     
     public function changeConfirmShift($id, $year, $month, $date, Request $request)
     {
+        $data = $request->post();    // postされたデータを取得
         
-        $data = $request->post();
-        
-        // シフトが登録される場合
-        if(isset($data['shift_id'])) {
-            Schedule::updateOrCreate(
-            ['user_id' => $id, 'date' => $date], 
-            ['shift_id' => $data['shift_id'], 
-             'schedule_status_id' => 2, 
-             'work_status_id' => $data['work_status_id']],
-            );
-        } else {
-            // 欠勤は登録しない
-            if($data['work_status_id'] != 2){
+         // 出勤 欠勤 有給でswitchする
+        switch($data['work_status_id']) {
+            // 出勤の場合
+            case 1:
                 Schedule::updateOrCreate(
                 ['user_id' => $id, 'date' => $date], 
-                ['shift_id' => null, 
+                ['shift_id' => $data['shift_id'], 
                  'schedule_status_id' => 2, 
-                 'work_status_id' => $data['work_status_id']],
+                 'work_status_id' => 1]
                 );
-            }
-            else if(Schedule::where('date', $date)->where('user_id', $id)->exists()){
-                Schedule::where('date', $date)->
-                where('user_id', $id)->
-                update(
-                    ['work_status_id' => 2]
+                break;
+                
+            // 欠勤の場合
+            case 2:
+                // 何もしない
+                break;
+                
+            // 有給の場合
+            case 3:
+                Schedule::updateOrCreate(
+                    ['user_id' => $id, 'date' => $date], 
+                    ['shift_id' => null, 
+                     'schedule_status_id' => 2, 
+                     'work_status_id' => 3]
                 );
-            
-            }
-            
+                break;
         }
         
         return redirect()->route('shift.confirm.get', ['year' => $year, 'month' => $month]);
