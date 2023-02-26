@@ -69,11 +69,12 @@ class ScheduleController extends Controller
              'schedule_status_id' => 1, 
              'work_status_id' => $data['work_status_id']],
             );
-        } else if($data['work_status_id'] == 2 && Schedule::where('date', $date)->where('user_id', Auth::user()->id)->exists()) {
+        } else {
+            if($data['work_status_id'] == 2 && Schedule::where('date', $date)->where('user_id', Auth::user()->id)->exists()) {
                 Schedule::where('date', $date)
                 ->where('user_id', Auth::user()->id)
                 ->delete();
-            
+            }
         }
         
         return redirect()->route('shift.calendar.edit');
@@ -212,13 +213,23 @@ class ScheduleController extends Controller
             );
         } else {
             // 欠勤は登録しない
-            if($data['work_status_id'] != 2)
-            Schedule::updateOrCreate(
-            ['user_id' => $id, 'date' => $date], 
-            ['shift_id' => null, 
-             'schedule_status_id' => 2, 
-             'work_status_id' => $data['work_status_id']],
-            );
+            if($data['work_status_id'] != 2){
+                Schedule::updateOrCreate(
+                ['user_id' => $id, 'date' => $date], 
+                ['shift_id' => null, 
+                 'schedule_status_id' => 2, 
+                 'work_status_id' => $data['work_status_id']],
+                );
+            }
+            else if(Schedule::where('date', $date)->where('user_id', $id)->exists()){
+                Schedule::where('date', $date)->
+                where('user_id', $id)->
+                update(
+                    ['work_status_id' => 2]
+                );
+            
+            }
+            
         }
         
         return redirect()->route('shift.confirm.get', ['year' => $year, 'month' => $month]);
