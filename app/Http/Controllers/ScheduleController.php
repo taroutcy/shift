@@ -18,7 +18,7 @@ class ScheduleController extends Controller
         $this->weeks = ['日', '月', '火', '水', '木', '金', '土'];
     }
     
-    public function makeFirstAndLastDay($year, $month) {
+    public function makeFirstAndLastDay($year, $month, $increace) {
         
         $carbon = new Carbon();     // インスタインスを生成
         $carbon->locale('ja_JP');   // 場所を日本に設定
@@ -27,6 +27,8 @@ class ScheduleController extends Controller
         if ($year && $month) {
             $carbon->setYear($year);    // 年を設定
             $carbon->setMonth($month);  // 月を設定
+        } elseif($increace) {
+            $carbon->addMonth();
         }
         
         $carbon->setDay(1);     // 〇月1日に設定
@@ -54,7 +56,7 @@ class ScheduleController extends Controller
         $weeks = $this->weeks;  // 曜日名を取得
         
         // $month月の初日と最終日を取得
-        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, true);
 
         // $month月におけるカレンダーの初日と最終日を取得
         $firstDayOfCalendar = $firstDayOfMonth->copy()->startOfWeek(); 
@@ -125,7 +127,7 @@ class ScheduleController extends Controller
         $weeks = $this->weeks;  // 曜日名を取得
 
         // $month月の初日と最終日を取得
-        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, false);
 
         // カレンダー内の日付を全て取得
         $dates = $this->makeDates($firstDayOfMonth->copy(), $lastDayOfMonth->copy());
@@ -146,7 +148,7 @@ class ScheduleController extends Controller
         $weeks = $this->weeks;  // 曜日名を取得
 
         // $month月の初日と最終日を取得
-        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
+        list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, true);
         
         // カレンダー内の日付を全て取得
         $dates = $this->makeDates($firstDayOfMonth->copy(), $lastDayOfMonth->copy());
@@ -170,7 +172,7 @@ class ScheduleController extends Controller
         if($request->has('confirm')) {
             
             // 日時取得
-            list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month);
+            list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, false);
             
             // 各ユーザごとに回す
             foreach(User::all() as $user) {
