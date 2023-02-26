@@ -27,6 +27,7 @@ class ScheduleController extends Controller
         if ($year && $month) {
             $carbon->setYear($year);    // 年を設定
             $carbon->setMonth($month);  // 月を設定
+        // 月を一つ増加させる場合
         } elseif($increace) {
             $carbon->addMonth();
         }
@@ -55,7 +56,7 @@ class ScheduleController extends Controller
     {
         $weeks = $this->weeks;  // 曜日名を取得
         
-        // $month月の初日と最終日を取得
+        // $month+1月の初日と最終日を取得
         list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, true);
 
         // $month月におけるカレンダーの初日と最終日を取得
@@ -147,7 +148,7 @@ class ScheduleController extends Controller
     {
         $weeks = $this->weeks;  // 曜日名を取得
 
-        // $month月の初日と最終日を取得
+        // $month+1月の初日と最終日を取得
         list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, true);
         
         // カレンダー内の日付を全て取得
@@ -171,7 +172,7 @@ class ScheduleController extends Controller
         // シフトをロックするボタンが押された場合
         if($request->has('confirm')) {
             
-            // 日時取得
+            // $month月の初日と最終日を取得
             list($firstDayOfMonth, $lastDayOfMonth) = $this->makeFirstAndLastDay($year, $month, false);
             
             // 各ユーザごとに回す
