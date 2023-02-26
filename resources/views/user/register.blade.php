@@ -11,9 +11,8 @@
                     &#9666; back
                 </button>
             </p>
-            <div class="card border-0 bg-transparent">
+            <div class="card bg-transparent text-center border-0">
                 <div class="card-header h3 text-center bg-transparent">{{ __('Register') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.register.post') }}">
                         @csrf
@@ -26,7 +25,7 @@
                                 <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number') }}" minlength="1" maxlength="10" autofocus required>
                             </div>
                         </div>
-                        
+                    
                          <!--名前-->
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -39,7 +38,7 @@
                                 <input id="first_name" type="text" class="form-control @error('name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" minlength="1" maxlength="10" required autocomplete="first_name" placeholder="名">
                             </div>
                         </div>
-                        
+                    
                         <!--パスワード-->
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -71,7 +70,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+                    
                         <!--デパ-->
                         <div class="form-group row">
                             <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
@@ -85,16 +84,14 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                    
+                        <p class="card-text">
+                            <div class="col-md-4 offset-md-4">
                                 <button type="submit" class="btn btn-outline-primary">
-                                    {{ __('Register') }}
+                                    登録
                                 </button>
                             </div>
-                        </div>
-                        
+                        </p>
                     </form>
                 </div>
             </div>
