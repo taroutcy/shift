@@ -69,15 +69,11 @@ class ScheduleController extends Controller
              'schedule_status_id' => 1, 
              'work_status_id' => $data['work_status_id']],
             );
-        } else {
-            if($data['work_status_id'] != 2) {
-                Schedule::updateOrCreate(
-                ['user_id' => Auth::user()->id, 'date' => $date], 
-                ['shift_id' => null, 
-                 'schedule_status_id' => 1, 
-                 'work_status_id' => $data['work_status_id']],
-                );
-            }
+        } else if($data['work_status_id'] == 2 && Schedule::where('date', $date)->where('user_id', Auth::user()->id)->exists()) {
+                Schedule::where('date', $date)
+                ->where('user_id', Auth::user()->id)
+                ->delete();
+            
         }
         
         return redirect()->route('shift.calendar.edit');
