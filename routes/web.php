@@ -44,4 +44,3 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-URL::forceScheme('http');
